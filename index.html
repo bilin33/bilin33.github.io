@@ -1,66 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Bin Lin | Low-Current Circuit Design</title>
-  <meta name="description" content="Nanoamp current measurement circuits, sensor readout electronics, and analog front-end design. IEEE Sensors published work.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bin Lin | Electrochemical Sensor Engineering</title>
+  <meta name="description" content="Electrochemical sensor circuit, chip, and electrode chip design." />
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 40px auto;
       line-height: 1.7;
-      padding: 0 20px;
+      color: #222;
+      background: #f7f9fc;
     }
-    h1 {
-      font-size: 32px;
+
+    header {
+      background: #0f172a;
+      color: white;
+      padding: 18px 0;
     }
-    h2 {
-      margin-top: 30px;
+
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .site-title {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 18px;
+      font-size: 15px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      padding: 70px 0 40px;
+    }
+
+    .hero h1 {
+      font-size: 40px;
+      margin-bottom: 16px;
+      color: #0f172a;
+    }
+
+    .hero p {
+      font-size: 18px;
+      max-width: 760px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin: 40px 0 70px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      font-size: 22px;
+      margin-top: 0;
+      color: #0f172a;
+    }
+
+    .card a {
+      display: inline-block;
+      margin-top: 10px;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .card a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      background: #e5e7eb;
+      padding: 24px 0;
+      color: #333;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
+  <header>
+    <div class="container topbar">
+      <p class="site-title">Bin Lin</p>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="sensor-circuit.html">Circuit Design</a>
+        <a href="sensor-chip.html">Chip Design</a>
+        <a href="electrode-chip.html">Electrode Chip Design</a>
+      </nav>
+    </div>
+  </header>
 
-<h1>Bin Lin</h1>
-<p><strong>Low-current measurement circuits | Analog front-end | Sensor readout</strong></p>
+  <main class="container">
+    <section class="hero">
+      <h1>Electrochemical Sensor Engineering</h1>
+      <p>
+        I work on electrochemical sensor interface design, including low-current readout circuits,
+        electrochemical sensor driver chip design, and electrode chip design. This site presents my
+        work across circuit, chip, and sensing platform development.
+      </p>
+    </section>
 
-<p>
-I design nanoamp-level current measurement circuits and sensor readout systems,
-with experience in low-noise analog front-end design, data acquisition, and signal processing.
-My work includes an IEEE Sensors conference publication and a fully implemented prototype system.
-</p>
+    <section class="cards">
+      <div class="card">
+        <h2>Electrochemical Sensor Circuit Design</h2>
+        <p>
+          Analog front-end design for electrochemical sensing, including TIA, ADC integration,
+          low-noise current measurement, and system-level readout.
+        </p>
+        <a href="sensor-circuit.html">View page →</a>
+      </div>
 
-<h2>Project</h2>
-<p><strong>Nanoamp Current Readout Circuit (TIA + ADC)</strong></p>
-<ul>
-  <li>Low-noise design for nanoamp-level current detection</li>
-  <li>Applicable to electrochemical sensors and general current measurement</li>
-  <li>Full system implemented with PCB and tested</li>
-</ul>
+      <div class="card">
+        <h2>Electrochemical Sensor Chip Design</h2>
+        <p>
+          Integrated chip-level design concepts for electrochemical sensor driving and readout,
+          with emphasis on low-noise and low-current performance.
+        </p>
+        <a href="sensor-chip.html">View page →</a>
+      </div>
 
-<h2>Publication</h2>
-<p>
-IEEE Sensors Conference (202X)<br>
-Early-stage results presented; system has since been further developed and optimized.
-</p>
+      <div class="card">
+        <h2>Electrochemical Sensor Electrode Chip Design</h2>
+        <p>
+          Electrode structure, sensing interface, and chip-level electrode platform concepts for
+          electrochemical detection and biosensing applications.
+        </p>
+        <a href="electrode-chip.html">View page →</a>
+      </div>
+    </section>
+  </main>
 
-<h2>Capabilities</h2>
-<ul>
-  <li>Analog circuit design (low-noise, TIA, sensor interfaces)</li>
-  <li>Data acquisition systems</li>
-  <li>Signal processing and data analysis</li>
-  <li>Prototype PCB design and testing</li>
-</ul>
-
-<h2>Collaboration</h2>
-<p>
-Open to technical collaboration and discussion in low-current measurement,
-sensor instrumentation, and analog front-end design.
-</p>
-
-<h2>Contact</h2>
-<p>Email: your@email.com</p>
-
+  <footer>
+    <div class="container">
+      Contact: your@email.com
+    </div>
+  </footer>
 </body>
 </html>
