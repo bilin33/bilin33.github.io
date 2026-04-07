@@ -4,17 +4,150 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Electrochemical Sensor Chip Design | Bin Lin</title>
+  <meta name="description" content="Integrated electrochemical sensor chip design including potentiostat, TIA, ADC, and I2C/SPI interface." />
   <style>
-    body { margin:0; font-family:Arial,sans-serif; line-height:1.7; color:#222; background:#f7f9fc; }
-    header { background:#0f172a; color:white; padding:18px 0; }
-    .container { width:90%; max-width:1000px; margin:0 auto; }
-    .topbar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
-    .site-title { font-size:28px; font-weight:bold; margin:0; }
-    nav a { color:white; text-decoration:none; margin-left:18px; font-size:15px; }
-    nav a:hover { text-decoration:underline; }
-    main { padding:60px 0; }
-    .content { background:white; border-radius:14px; padding:32px; box-shadow:0 6px 18px rgba(0,0,0,0.08); }
-    h1 { color:#0f172a; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      color: #222;
+      background: #f7f9fc;
+    }
+
+    header {
+      background: #0f172a;
+      color: white;
+      padding: 18px 0;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .site-title {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 18px;
+      font-size: 15px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .page-layout {
+      display: flex;
+      gap: 24px;
+      padding: 40px 0 60px;
+      align-items: flex-start;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      padding: 18px 0;
+      flex-shrink: 0;
+      position: sticky;
+      top: 20px;
+    }
+
+    .sidebar-title {
+      font-size: 14px;
+      color: #64748b;
+      padding: 0 20px 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: bold;
+    }
+
+    .tab-button {
+      display: block;
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      padding: 14px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      color: #0f172a;
+      transition: background 0.2s ease;
+    }
+
+    .tab-button:hover {
+      background: #eef2ff;
+    }
+
+    .tab-button.active {
+      background: #dbeafe;
+      font-weight: bold;
+      border-left: 4px solid #2563eb;
+      padding-left: 16px;
+    }
+
+    .content-area {
+      flex: 1;
+      background: white;
+      border-radius: 14px;
+      padding: 32px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      min-height: 520px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    h1 {
+      color: #0f172a;
+      margin-top: 0;
+      margin-bottom: 18px;
+      font-size: 34px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    .section-note {
+      background: #f8fafc;
+      border-left: 4px solid #2563eb;
+      padding: 16px 18px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 900px) {
+      .page-layout {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        position: static;
+      }
+    }
   </style>
 </head>
 <body>
@@ -31,18 +164,126 @@
   </header>
 
   <main class="container">
-    <div class="content">
-      <h1>Electrochemical Sensor Chip Design</h1>
-      <p>
-        This page presents chip-level design concepts for electrochemical sensor systems,
-        including integrated driver and readout architectures, low-noise analog front-end blocks,
-        and system integration strategies for sensing applications.
-      </p>
-      <p>
-        It highlights the transition from board-level prototypes to chip-level implementation
-        for compact, scalable, and high-performance sensor platforms.
-      </p>
+    <div class="page-layout">
+      <aside class="sidebar">
+        <div class="sidebar-title">Chip Blocks</div>
+        <button class="tab-button active" onclick="showTab('potentiostat', this)">Potentiostat</button>
+        <button class="tab-button" onclick="showTab('tia', this)">TIA</button>
+        <button class="tab-button" onclick="showTab('adc', this)">ADC</button>
+        <button class="tab-button" onclick="showTab('interface', this)">I2C / SPI</button>
+      </aside>
+
+      <section class="content-area">
+        <div id="potentiostat" class="tab-content active">
+          <h1>Integrated Potentiostat</h1>
+          <p>
+            This section focuses on the potentiostat block integrated on chip for electrochemical
+            sensor systems. The goal is to implement stable electrode bias control inside a compact
+            mixed-signal integrated circuit.
+          </p>
+          <div class="section-note">
+            In the integrated chip architecture, the potentiostat acts as the front-end driving
+            block that maintains the required electrochemical operating conditions while interfacing
+            directly with the sensing electrodes.
+          </div>
+          <ul>
+            <li>On-chip bias control for electrochemical sensing</li>
+            <li>Reference, working, and counter electrode interface design</li>
+            <li>Closed-loop control structure</li>
+            <li>Circuit implementation for stability and low-noise operation</li>
+            <li>Layout-aware analog block integration</li>
+          </ul>
+          <p>
+            At the chip level, the design must consider analog accuracy, loop stability, device
+            matching, parasitic effects, and layout symmetry to ensure robust operation.
+          </p>
+        </div>
+
+        <div id="tia" class="tab-content">
+          <h1>Integrated TIA</h1>
+          <p>
+            The transimpedance amplifier is a key on-chip readout block that converts low sensor
+            current into a measurable voltage. For electrochemical sensing, this block is especially
+            important because the signal level can be in the nanoamp range or lower.
+          </p>
+          <ul>
+            <li>Current-to-voltage conversion on chip</li>
+            <li>Low input-referred noise design</li>
+            <li>Gain selection and feedback design</li>
+            <li>Bandwidth and stability optimization</li>
+            <li>Analog layout considerations for matching and parasitic reduction</li>
+          </ul>
+          <p>
+            In chip implementation, TIA performance is influenced not only by schematic design but
+            also by layout parasitics, device placement, guard structures, and substrate noise.
+          </p>
+        </div>
+
+        <div id="adc" class="tab-content">
+          <h1>Integrated ADC</h1>
+          <p>
+            The ADC digitizes the conditioned analog signal from the readout chain and enables
+            downstream digital acquisition and processing. In the integrated sensor chip, the ADC
+            must be designed to match the output range and resolution requirements of the analog
+            front-end.
+          </p>
+          <ul>
+            <li>On-chip analog-to-digital conversion</li>
+            <li>Resolution and dynamic range design tradeoffs</li>
+            <li>Compatibility with low-current sensing front-end</li>
+            <li>Noise, power, and sampling considerations</li>
+            <li>Mixed-signal layout and floorplanning</li>
+          </ul>
+          <p>
+            The ADC block also drives the mixed-signal integration challenges of the chip,
+            requiring careful isolation between analog and digital domains.
+          </p>
+        </div>
+
+        <div id="interface" class="tab-content">
+          <h1>I2C / SPI Interface</h1>
+          <p>
+            To make the integrated electrochemical sensor chip practical for system use, a digital
+            communication interface such as I2C or SPI is included for configuration, control, and
+            data transfer.
+          </p>
+          <ul>
+            <li>Digital register access and chip configuration</li>
+            <li>Communication with external controller or microprocessor</li>
+            <li>Readout data transfer from ADC output</li>
+            <li>System-level integration and usability</li>
+            <li>Digital block placement in mixed-signal chip layout</li>
+          </ul>
+          <p>
+            This interface bridges the analog sensing chip and the external digital system,
+            enabling calibration, parameter tuning, and measurement data extraction.
+          </p>
+          <div class="section-note">
+            For a fully integrated electrochemical sensor chip, I2C or SPI is not only a digital
+            convenience block, but also an essential system integration component that supports
+            real-world deployment.
+          </div>
+        </div>
+      </section>
     </div>
   </main>
+
+  <script>
+    function showTab(tabId, buttonElement) {
+      const contents = document.querySelectorAll('.tab-content');
+      const buttons = document.querySelectorAll('.tab-button');
+
+      contents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      buttons.forEach(button => {
+        button.classList.remove('active');
+      });
+
+      document.getElementById(tabId).classList.add('active');
+      buttonElement.classList.add('active');
+    }
+  </script>
 </body>
 </html>
