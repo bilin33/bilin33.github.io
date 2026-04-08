@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Electrochemical Sensor Circuit Design | Shuaishuai Ling</title>
-  <meta name="description" content="Electrochemical sensor circuit design including overall architecture, potentiostat, transimpedance amplifier, and ADC." />
+  <meta name="description" content="Electrochemical sensor circuit design including overall architecture, potentiostat, TIA, and ADC." />
   <style>
     body {
       margin: 0;
@@ -22,7 +22,7 @@
 
     .container {
       width: 92%;
-      max-width: 1200px;
+      max-width: 1250px;
       margin: 0 auto;
     }
 
@@ -59,7 +59,7 @@
     }
 
     .sidebar {
-      width: 250px;
+      width: 280px;
       background: white;
       border-radius: 14px;
       box-shadow: 0 6px 18px rgba(0,0,0,0.08);
@@ -78,28 +78,79 @@
       font-weight: bold;
     }
 
-    .tab-button {
+    .sidebar-item {
+      width: 100%;
+    }
+
+    .tab-button,
+    .submenu-toggle,
+    .submenu-button {
       display: block;
       width: 100%;
       border: none;
       background: transparent;
       text-align: left;
-      padding: 14px 20px;
-      font-size: 16px;
       cursor: pointer;
       color: #0f172a;
       transition: background 0.2s ease;
+      font-size: 16px;
     }
 
-    .tab-button:hover {
+    .tab-button,
+    .submenu-toggle {
+      padding: 14px 20px;
+    }
+
+    .tab-button:hover,
+    .submenu-toggle:hover,
+    .submenu-button:hover {
       background: #eef2ff;
     }
 
-    .tab-button.active {
+    .tab-button.active,
+    .submenu-button.active {
       background: #dbeafe;
       font-weight: bold;
       border-left: 4px solid #2563eb;
+    }
+
+    .tab-button.active,
+    .submenu-toggle.active,
+    .submenu-button.active {
       padding-left: 16px;
+    }
+
+    .submenu-toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-right: 16px;
+    }
+
+    .arrow {
+      font-size: 14px;
+      color: #475569;
+      transition: transform 0.2s ease;
+    }
+
+    .submenu.open .arrow {
+      transform: rotate(90deg);
+    }
+
+    .submenu-list {
+      display: none;
+      padding: 4px 0 8px 0;
+      background: #fafcff;
+    }
+
+    .submenu.open .submenu-list {
+      display: block;
+    }
+
+    .submenu-button {
+      padding: 12px 20px 12px 40px;
+      font-size: 15px;
+      color: #334155;
     }
 
     .content-area {
@@ -108,7 +159,7 @@
       border-radius: 14px;
       padding: 32px;
       box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-      min-height: 650px;
+      min-height: 760px;
     }
 
     .tab-content {
@@ -203,19 +254,6 @@
       color: #0f172a;
     }
 
-    .poll-option {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .poll-option:last-child {
-      border-bottom: none;
-    }
-
     .vote-btn {
       border: none;
       background: #2563eb;
@@ -274,10 +312,35 @@
     <div class="page-layout">
       <aside class="sidebar">
         <div class="sidebar-title">Contents</div>
-        <button class="tab-button active" onclick="showTab('overall', this)">Overall</button>
-        <button class="tab-button" onclick="showTab('potentiostat', this)">Potentiostat</button>
-        <button class="tab-button" onclick="showTab('tia', this)">Transimpedance Amplifier</button>
-        <button class="tab-button" onclick="showTab('adc', this)">ADC</button>
+
+        <div class="sidebar-item">
+          <button class="tab-button active" onclick="showTab('overall', this)">Overall</button>
+        </div>
+
+        <div class="sidebar-item">
+          <button class="tab-button" onclick="showTab('potentiostat', this)">Potentiostat</button>
+        </div>
+
+        <div class="sidebar-item submenu" id="tiaMenu">
+          <button class="submenu-toggle" onclick="toggleSubmenu('tiaMenu')">
+            <span>Transimpedance Amplifier</span>
+            <span class="arrow">▶</span>
+          </button>
+          <div class="submenu-list">
+            <button class="submenu-button" onclick="showTab('tia-opa380', this, 'tiaMenu')">OPA380</button>
+          </div>
+        </div>
+
+        <div class="sidebar-item submenu" id="adcMenu">
+          <button class="submenu-toggle" onclick="toggleSubmenu('adcMenu')">
+            <span>ADC</span>
+            <span class="arrow">▶</span>
+          </button>
+          <div class="submenu-list">
+            <button class="submenu-button" onclick="showTab('adc-ads1262', this, 'adcMenu')">ADS1262</button>
+            <button class="submenu-button" onclick="showTab('adc-msp430', this, 'adcMenu')">MSP430F6736A</button>
+          </div>
+        </div>
       </aside>
 
       <section class="content-area">
@@ -294,10 +357,6 @@
           </div>
 
           <h2>Component Selection</h2>
-          <p>
-            The following table summarizes representative component choices used in the current prototype.
-          </p>
-
           <div class="table-wrap">
             <table>
               <thead>
@@ -319,19 +378,19 @@
                   <td>Low-noise transimpedance amplification for current readout</td>
                 </tr>
                 <tr>
-                  <td>ADC</td>
-                  <td>TBD</td>
-                  <td>Suitable resolution and interface for sensor signal digitization</td>
+                  <td>ADC Option 1</td>
+                  <td>ADS1262</td>
+                  <td>High-resolution external ADC for precision digitization</td>
+                </tr>
+                <tr>
+                  <td>ADC Option 2</td>
+                  <td>MSP430F6736A on-chip 24-bit ADC</td>
+                  <td>Integrated MCU + ADC solution for system-level simplification</td>
                 </tr>
                 <tr>
                   <td>Reference / Bias</td>
                   <td>TBD</td>
                   <td>Stable bias generation for electrochemical operation</td>
-                </tr>
-                <tr>
-                  <td>MCU / Controller</td>
-                  <td>TBD</td>
-                  <td>Data acquisition, control, and interface</td>
                 </tr>
               </tbody>
             </table>
@@ -386,16 +445,16 @@
           </div>
         </div>
 
-        <div id="tia" class="tab-content">
-          <h1>Transimpedance Amplifier</h1>
+        <div id="tia-opa380" class="tab-content">
+          <h1>Transimpedance Amplifier — OPA380</h1>
           <p>
-            This section presents the TIA block used for low-current readout. In the current version,
-            the amplifier under test is <strong>OPA380 from Texas Instruments</strong>.
+            This section presents the current TIA implementation based on
+            <strong>OPA380 from Texas Instruments</strong>.
           </p>
 
           <h2>Schematic</h2>
           <div class="img-block">
-            <img src="tia-schematic.png" alt="TIA schematic">
+            <img src="tia-schematic.png" alt="TIA schematic using OPA380">
             <div class="caption">Figure: Transimpedance amplifier schematic using OPA380.</div>
           </div>
 
@@ -408,72 +467,105 @@
           <h2>Noise Spectrum</h2>
           <div class="img-block">
             <img src="tia-noise-spectrum.png" alt="TIA frequency-domain noise plot">
-            <div class="caption">Figure: Frequency-domain noise characterization of the TIA.</div>
+            <div class="caption">Figure: Frequency-domain noise characterization of the OPA380-based TIA.</div>
           </div>
 
           <div class="section-note">
-            Since the TIA performance is strongly influenced by the selected operational amplifier,
-            only OPA380 has been tested so far in the current implementation.
+            Since TIA performance is strongly influenced by the selected op amp, only OPA380 has
+            been characterized so far. Additional devices will be added later.
           </div>
 
           <div class="poll-box">
-            <h3>Vote for the Next Op Amp to Test</h3>
+            <h3>Suggest the Next Op Amp to Test</h3>
             <p>
-              I plan to evaluate additional op amps for the TIA stage in future updates.
-              Please vote for the op amp you would like to see tested next.
+              If there is another op amp you would like to see evaluated for the TIA stage,
+              please enter the model below.
             </p>
 
-            <div class="poll-option">
-              <span>OPA320</span>
-              <button class="vote-btn" onclick="vote('OPA320')">Vote</button>
-            </div>
-            <div class="poll-option">
-              <span>OPA381</span>
-              <button class="vote-btn" onclick="vote('OPA381')">Vote</button>
-            </div>
-            <div class="poll-option">
-              <span>LMP7721</span>
-              <button class="vote-btn" onclick="vote('LMP7721')">Vote</button>
-            </div>
-            <div class="poll-option">
-              <span>ADA4530-1</span>
-              <button class="vote-btn" onclick="vote('ADA4530-1')">Vote</button>
-            </div>
-            <div class="poll-option">
-              <span>OPA140</span>
-              <button class="vote-btn" onclick="vote('OPA140')">Vote</button>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+              <input
+                id="tiaInput"
+                type="text"
+                placeholder="Enter op amp model, e.g. OPA381"
+                style="flex:1; min-width:240px; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px;"
+              />
+              <button class="vote-btn" onclick="submitTiaVote()">Submit</button>
             </div>
 
             <h3 style="margin-top:24px;">Current Ranking</h3>
-            <ol id="rankingList" class="ranking"></ol>
+            <ol id="tiaRankingList" class="ranking"></ol>
             <p class="small-note">
-              This ranking is stored locally in your browser for now.
+              This ranking is currently stored locally in your browser.
             </p>
           </div>
         </div>
 
-        <div id="adc" class="tab-content">
-          <h1>ADC</h1>
+        <div id="adc-ads1262" class="tab-content">
+          <h1>ADC — ADS1262</h1>
           <p>
-            This section presents the ADC stage used to digitize the conditioned analog signal
-            for downstream acquisition and analysis.
+            This section presents the ADC path based on <strong>ADS1262</strong>, used as an
+            external high-resolution ADC for sensor signal digitization.
           </p>
 
           <h2>Schematic</h2>
           <div class="img-block">
-            <img src="adc-schematic.png" alt="ADC schematic">
-            <div class="caption">Figure: ADC circuit schematic in the signal chain.</div>
+            <img src="adc-schematic-ads1262.png" alt="ADS1262 schematic">
+            <div class="caption">Figure: ADC schematic using ADS1262.</div>
           </div>
 
           <h2>Input Voltage vs Output Voltage</h2>
           <div class="img-block">
-            <img src="adc-vin-vout-curve.png" alt="ADC input voltage versus output voltage">
-            <div class="caption">Figure: Input voltage to output voltage transfer characteristic of the ADC stage.</div>
+            <img src="adc-vin-vout-ads1262.png" alt="ADS1262 input voltage versus output voltage">
+            <div class="caption">Figure: Input voltage to output response using ADS1262.</div>
+          </div>
+
+          <div class="poll-box">
+            <h3>Suggest the Next ADC to Test</h3>
+            <p>
+              If there is another ADC you would like to see evaluated in this signal chain,
+              please enter the model below.
+            </p>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+              <input
+                id="adcInput"
+                type="text"
+                placeholder="Enter ADC model, e.g. ADS1220"
+                style="flex:1; min-width:240px; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px;"
+              />
+              <button class="vote-btn" onclick="submitAdcVote()">Submit</button>
+            </div>
+
+            <h3 style="margin-top:24px;">Current Ranking</h3>
+            <ol id="adcRankingList" class="ranking"></ol>
+            <p class="small-note">
+              This ranking is currently stored locally in your browser.
+            </p>
+          </div>
+        </div>
+
+        <div id="adc-msp430" class="tab-content">
+          <h1>ADC — MSP430F6736A</h1>
+          <p>
+            This section presents the ADC path based on the
+            <strong>on-chip 24-bit ADC inside MSP430F6736A</strong>.
+          </p>
+
+          <h2>Schematic</h2>
+          <div class="img-block">
+            <img src="adc-schematic-msp430.png" alt="MSP430F6736A ADC schematic">
+            <div class="caption">Figure: ADC signal path using MSP430F6736A on-chip 24-bit ADC.</div>
+          </div>
+
+          <h2>Input Voltage vs Output Voltage</h2>
+          <div class="img-block">
+            <img src="adc-vin-vout-msp430.png" alt="MSP430F6736A input voltage versus output voltage">
+            <div class="caption">Figure: Input voltage to output response using MSP430F6736A on-chip ADC.</div>
           </div>
 
           <div class="section-note">
-            Similar to the TIA section, this part emphasizes how the ADC stage translates analog
-            behavior into measurable output for acquisition and processing.
+            Using the MCU’s integrated ADC provides a more compact system-level path and reduces
+            external component count, while introducing a different set of noise and integration tradeoffs.
           </div>
         </div>
       </section>
@@ -481,55 +573,100 @@
   </main>
 
   <script>
-    function showTab(tabId, buttonElement) {
-      const contents = document.querySelectorAll('.tab-content');
-      const buttons = document.querySelectorAll('.tab-button');
+    function clearActiveButtons() {
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.submenu-button').forEach(btn => btn.classList.remove('active'));
+    }
 
-      contents.forEach(content => content.classList.remove('active'));
-      buttons.forEach(button => button.classList.remove('active'));
+    function clearActiveTabs() {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    }
+
+    function showTab(tabId, buttonElement, submenuId = null) {
+      clearActiveButtons();
+      clearActiveTabs();
 
       document.getElementById(tabId).classList.add('active');
       buttonElement.classList.add('active');
+
+      if (submenuId) {
+        document.getElementById(submenuId).classList.add('open');
+      }
     }
 
-    const defaultVotes = {
-      "OPA320": 0,
-      "OPA381": 0,
-      "LMP7721": 0,
-      "ADA4530-1": 0,
-      "OPA140": 0
-    };
-
-    function getVotes() {
-      const saved = localStorage.getItem('opampVotes');
-      return saved ? JSON.parse(saved) : defaultVotes;
+    function toggleSubmenu(menuId) {
+      document.getElementById(menuId).classList.toggle('open');
     }
 
-    function saveVotes(votes) {
-      localStorage.setItem('opampVotes', JSON.stringify(votes));
+    function normalizeChipName(name) {
+      return name.trim().replace(/\s+/g, ' ');
     }
 
-    function renderRanking() {
-      const votes = getVotes();
-      const rankingList = document.getElementById('rankingList');
-      const sorted = Object.entries(votes).sort((a, b) => b[1] - a[1]);
+    function getStoredVotes(key) {
+      const saved = localStorage.getItem(key);
+      return saved ? JSON.parse(saved) : {};
+    }
 
+    function saveStoredVotes(key, data) {
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+
+    function sortVotes(votesObject) {
+      return Object.entries(votesObject).sort((a, b) => {
+        if (b[1] !== a[1]) return b[1] - a[1];
+        return a[0].localeCompare(b[0]);
+      });
+    }
+
+    function renderRanking(listId, storageKey) {
+      const votes = getStoredVotes(storageKey);
+      const rankingList = document.getElementById(listId);
+      if (!rankingList) return;
+
+      const sorted = sortVotes(votes);
       rankingList.innerHTML = '';
+
+      if (sorted.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'No suggestions yet.';
+        rankingList.appendChild(li);
+        return;
+      }
+
       sorted.forEach(([name, count]) => {
         const li = document.createElement('li');
-        li.textContent = name + ' — ' + count + ' vote(s)';
+        li.textContent = `${name} — ${count} vote(s)`;
         rankingList.appendChild(li);
       });
     }
 
-    function vote(name) {
-      const votes = getVotes();
-      votes[name] = (votes[name] || 0) + 1;
-      saveVotes(votes);
-      renderRanking();
+    function submitVote(inputId, storageKey, listId) {
+      const input = document.getElementById(inputId);
+      const chipName = normalizeChipName(input.value);
+
+      if (!chipName) {
+        alert('Please enter a chip model first.');
+        return;
+      }
+
+      const votes = getStoredVotes(storageKey);
+      votes[chipName] = (votes[chipName] || 0) + 1;
+      saveStoredVotes(storageKey, votes);
+
+      input.value = '';
+      renderRanking(listId, storageKey);
     }
 
-    renderRanking();
+    function submitTiaVote() {
+      submitVote('tiaInput', 'tiaChipVotes', 'tiaRankingList');
+    }
+
+    function submitAdcVote() {
+      submitVote('adcInput', 'adcChipVotes', 'adcRankingList');
+    }
+
+    renderRanking('tiaRankingList', 'tiaChipVotes');
+    renderRanking('adcRankingList', 'adcChipVotes');
   </script>
 </body>
 </html>
