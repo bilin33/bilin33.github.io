@@ -22,7 +22,7 @@
 
     .container {
       width: 92%;
-      max-width: 1200px;
+      max-width: 1250px;
       margin: 0 auto;
     }
 
@@ -59,7 +59,7 @@
     }
 
     .sidebar {
-      width: 240px;
+      width: 280px;
       background: white;
       border-radius: 14px;
       box-shadow: 0 6px 18px rgba(0,0,0,0.08);
@@ -78,28 +78,74 @@
       font-weight: bold;
     }
 
-    .tab-button {
+    .tab-button,
+    .submenu-toggle,
+    .submenu-button {
       display: block;
       width: 100%;
       border: none;
       background: transparent;
       text-align: left;
-      padding: 14px 20px;
-      font-size: 16px;
       cursor: pointer;
       color: #0f172a;
       transition: background 0.2s ease;
+      font-size: 16px;
     }
 
-    .tab-button:hover {
+    .tab-button,
+    .submenu-toggle {
+      padding: 14px 20px;
+    }
+
+    .tab-button:hover,
+    .submenu-toggle:hover,
+    .submenu-button:hover {
       background: #eef2ff;
     }
 
-    .tab-button.active {
+    .tab-button.active,
+    .submenu-button.active {
       background: #dbeafe;
       font-weight: bold;
       border-left: 4px solid #2563eb;
+    }
+
+    .tab-button.active,
+    .submenu-button.active {
       padding-left: 16px;
+    }
+
+    .submenu-toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-right: 16px;
+    }
+
+    .arrow {
+      font-size: 14px;
+      color: #475569;
+      transition: transform 0.2s ease;
+    }
+
+    .submenu.open .arrow {
+      transform: rotate(90deg);
+    }
+
+    .submenu-list {
+      display: none;
+      padding: 4px 0 8px 0;
+      background: #fafcff;
+    }
+
+    .submenu.open .submenu-list {
+      display: block;
+    }
+
+    .submenu-button {
+      padding: 12px 20px 12px 40px;
+      font-size: 15px;
+      color: #334155;
     }
 
     .content-area {
@@ -108,7 +154,7 @@
       border-radius: 14px;
       padding: 32px;
       box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-      min-height: 520px;
+      min-height: 700px;
     }
 
     .tab-content {
@@ -124,6 +170,16 @@
       margin-top: 0;
       margin-bottom: 18px;
       font-size: 34px;
+    }
+
+    h2 {
+      color: #0f172a;
+      margin-top: 32px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #334155;
     }
 
     ul {
@@ -153,7 +209,7 @@
 <body>
   <header>
     <div class="container topbar">
-      <p class="site-title">Bin Lin</p>
+      <p class="site-title">Shuaishuai Ling</p>
       <nav>
         <a href="index.html">Home</a>
         <a href="sensor-circuit.html">Circuit Design</a>
@@ -167,10 +223,30 @@
     <div class="page-layout">
       <aside class="sidebar">
         <div class="sidebar-title">Chip Blocks</div>
-        <button class="tab-button active" onclick="showTab('potentiostat', this)">Potentiostat</button>
-        <button class="tab-button" onclick="showTab('tia', this)">TIA</button>
-        <button class="tab-button" onclick="showTab('adc', this)">ADC</button>
-        <button class="tab-button" onclick="showTab('interface', this)">I2C / SPI</button>
+
+        <button class="tab-button active" type="button" onclick="showTab('potentiostat', this)">Potentiostat</button>
+
+        <div class="submenu" id="tiaMenu">
+          <button class="submenu-toggle" type="button" onclick="toggleSubmenu('tiaMenu')">
+            <span>TIA</span>
+            <span class="arrow">▶</span>
+          </button>
+          <div class="submenu-list">
+            <button class="submenu-button" type="button" onclick="showTab('tia-overview', this, 'tiaMenu')">Overview</button>
+          </div>
+        </div>
+
+        <div class="submenu" id="adcMenu">
+          <button class="submenu-toggle" type="button" onclick="toggleSubmenu('adcMenu')">
+            <span>ADC</span>
+            <span class="arrow">▶</span>
+          </button>
+          <div class="submenu-list">
+            <button class="submenu-button" type="button" onclick="showTab('adc-overview', this, 'adcMenu')">Overview</button>
+          </div>
+        </div>
+
+        <button class="tab-button" type="button" onclick="showTab('interface', this)">I2C / SPI</button>
       </aside>
 
       <section class="content-area">
@@ -181,11 +257,13 @@
             sensor systems. The goal is to implement stable electrode bias control inside a compact
             mixed-signal integrated circuit.
           </p>
+
           <div class="section-note">
             In the integrated chip architecture, the potentiostat acts as the front-end driving
             block that maintains the required electrochemical operating conditions while interfacing
             directly with the sensing electrodes.
           </div>
+
           <ul>
             <li>On-chip bias control for electrochemical sensing</li>
             <li>Reference, working, and counter electrode interface design</li>
@@ -193,19 +271,21 @@
             <li>Circuit implementation for stability and low-noise operation</li>
             <li>Layout-aware analog block integration</li>
           </ul>
+
           <p>
             At the chip level, the design must consider analog accuracy, loop stability, device
             matching, parasitic effects, and layout symmetry to ensure robust operation.
           </p>
         </div>
 
-        <div id="tia" class="tab-content">
+        <div id="tia-overview" class="tab-content">
           <h1>Integrated TIA</h1>
           <p>
             The transimpedance amplifier is a key on-chip readout block that converts low sensor
             current into a measurable voltage. For electrochemical sensing, this block is especially
             important because the signal level can be in the nanoamp range or lower.
           </p>
+
           <ul>
             <li>Current-to-voltage conversion on chip</li>
             <li>Low input-referred noise design</li>
@@ -213,13 +293,14 @@
             <li>Bandwidth and stability optimization</li>
             <li>Analog layout considerations for matching and parasitic reduction</li>
           </ul>
+
           <p>
             In chip implementation, TIA performance is influenced not only by schematic design but
             also by layout parasitics, device placement, guard structures, and substrate noise.
           </p>
         </div>
 
-        <div id="adc" class="tab-content">
+        <div id="adc-overview" class="tab-content">
           <h1>Integrated ADC</h1>
           <p>
             The ADC digitizes the conditioned analog signal from the readout chain and enables
@@ -227,6 +308,7 @@
             must be designed to match the output range and resolution requirements of the analog
             front-end.
           </p>
+
           <ul>
             <li>On-chip analog-to-digital conversion</li>
             <li>Resolution and dynamic range design tradeoffs</li>
@@ -234,6 +316,7 @@
             <li>Noise, power, and sampling considerations</li>
             <li>Mixed-signal layout and floorplanning</li>
           </ul>
+
           <p>
             The ADC block also drives the mixed-signal integration challenges of the chip,
             requiring careful isolation between analog and digital domains.
@@ -247,6 +330,7 @@
             communication interface such as I2C or SPI is included for configuration, control, and
             data transfer.
           </p>
+
           <ul>
             <li>Digital register access and chip configuration</li>
             <li>Communication with external controller or microprocessor</li>
@@ -254,10 +338,7 @@
             <li>System-level integration and usability</li>
             <li>Digital block placement in mixed-signal chip layout</li>
           </ul>
-          <p>
-            This interface bridges the analog sensing chip and the external digital system,
-            enabling calibration, parameter tuning, and measurement data extraction.
-          </p>
+
           <div class="section-note">
             For a fully integrated electrochemical sensor chip, I2C or SPI is not only a digital
             convenience block, but also an essential system integration component that supports
@@ -269,20 +350,40 @@
   </main>
 
   <script>
-    function showTab(tabId, buttonElement) {
-      const contents = document.querySelectorAll('.tab-content');
-      const buttons = document.querySelectorAll('.tab-button');
-
-      contents.forEach(content => {
-        content.classList.remove('active');
+    function clearActiveButtons() {
+      document.querySelectorAll('.tab-button').forEach(function(btn) {
+        btn.classList.remove('active');
       });
-
-      buttons.forEach(button => {
-        button.classList.remove('active');
+      document.querySelectorAll('.submenu-button').forEach(function(btn) {
+        btn.classList.remove('active');
       });
+    }
 
-      document.getElementById(tabId).classList.add('active');
-      buttonElement.classList.add('active');
+    function clearActiveTabs() {
+      document.querySelectorAll('.tab-content').forEach(function(tab) {
+        tab.classList.remove('active');
+      });
+    }
+
+    function showTab(tabId, buttonElement, submenuId) {
+      clearActiveButtons();
+      clearActiveTabs();
+
+      var target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+      if (buttonElement) buttonElement.classList.add('active');
+
+      if (submenuId) {
+        var menu = document.getElementById(submenuId);
+        if (menu) menu.classList.add('open');
+      }
+    }
+
+    function toggleSubmenu(menuId) {
+      var menu = document.getElementById(menuId);
+      if (menu) {
+        menu.classList.toggle('open');
+      }
     }
   </script>
 </body>
