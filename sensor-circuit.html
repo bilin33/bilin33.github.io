@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Electrochemical Sensor Circuit Design | Bin Lin</title>
-  <meta name="description" content="Electrochemical sensor circuit design including potentiostat, transimpedance amplifier, and ADC." />
+  <title>Electrochemical Sensor Circuit Design | Shuaishuai Ling</title>
+  <meta name="description" content="Electrochemical sensor circuit design including overall architecture, potentiostat, transimpedance amplifier, and ADC." />
   <style>
     body {
       margin: 0;
@@ -59,7 +59,7 @@
     }
 
     .sidebar {
-      width: 240px;
+      width: 250px;
       background: white;
       border-radius: 14px;
       box-shadow: 0 6px 18px rgba(0,0,0,0.08);
@@ -108,7 +108,7 @@
       border-radius: 14px;
       padding: 32px;
       box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-      min-height: 500px;
+      min-height: 650px;
     }
 
     .tab-content {
@@ -128,7 +128,12 @@
 
     h2 {
       color: #0f172a;
-      margin-top: 0;
+      margin-top: 34px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #334155;
     }
 
     ul {
@@ -141,6 +146,103 @@
       padding: 16px 18px;
       border-radius: 8px;
       margin: 20px 0;
+    }
+
+    .img-block {
+      margin: 18px 0 28px;
+    }
+
+    .img-block img {
+      width: 100%;
+      max-width: 950px;
+      display: block;
+      margin: 12px 0;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      background: white;
+    }
+
+    .caption {
+      font-size: 14px;
+      color: #64748b;
+      margin-top: 6px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #e2e8f0;
+    }
+
+    .poll-box {
+      margin-top: 28px;
+      padding: 22px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 1px solid #dbeafe;
+    }
+
+    .poll-box h3 {
+      margin-top: 0;
+      color: #0f172a;
+    }
+
+    .poll-option {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .poll-option:last-child {
+      border-bottom: none;
+    }
+
+    .vote-btn {
+      border: none;
+      background: #2563eb;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .vote-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .ranking {
+      margin-top: 18px;
+      padding-left: 20px;
+    }
+
+    .ranking li {
+      margin-bottom: 8px;
+    }
+
+    .small-note {
+      font-size: 14px;
+      color: #64748b;
+      margin-top: 12px;
     }
 
     @media (max-width: 900px) {
@@ -158,7 +260,7 @@
 <body>
   <header>
     <div class="container topbar">
-      <p class="site-title">Bin Lin</p>
+      <p class="site-title">Shuaishuai Ling</p>
       <nav>
         <a href="index.html">Home</a>
         <a href="sensor-circuit.html">Circuit Design</a>
@@ -180,95 +282,199 @@
 
       <section class="content-area">
         <div id="overall" class="tab-content active">
-          <h1>Electrochemical Sensor Circuit Design</h1>
+          <h1>Overall</h1>
           <p>
-            This page presents the overall circuit design framework for electrochemical sensor
-            readout systems, including potentiostat control, transimpedance amplification,
-            and analog-to-digital conversion.
+            This section presents the overall architecture of the electrochemical sensor
+            circuit platform, including component selection, schematic design, and PCB layout.
           </p>
+
           <div class="section-note">
-            The circuit platform is designed not only for electrochemical sensing, but also for
-            general low-current measurement applications at the nanoamp level.
+            The system is designed for electrochemical sensing and can also be adapted for
+            general low-current measurement applications.
           </div>
+
+          <h2>Component Selection</h2>
           <p>
-            My work focuses on low-noise analog front-end design, current readout accuracy,
-            signal chain stability, and practical PCB implementation for sensor systems.
+            The following table summarizes representative component choices used in the current prototype.
           </p>
-          <ul>
-            <li>System-level sensor interface architecture</li>
-            <li>Low-current readout design</li>
-            <li>Noise-aware analog front-end optimization</li>
-            <li>Prototype implementation and testing</li>
-          </ul>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Block</th>
+                  <th>Selected Part</th>
+                  <th>Reason for Selection</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Potentiostat Op Amp</td>
+                  <td>TBD</td>
+                  <td>Stable electrode bias control and analog compatibility</td>
+                </tr>
+                <tr>
+                  <td>TIA Op Amp</td>
+                  <td>OPA380 (TI)</td>
+                  <td>Low-noise transimpedance amplification for current readout</td>
+                </tr>
+                <tr>
+                  <td>ADC</td>
+                  <td>TBD</td>
+                  <td>Suitable resolution and interface for sensor signal digitization</td>
+                </tr>
+                <tr>
+                  <td>Reference / Bias</td>
+                  <td>TBD</td>
+                  <td>Stable bias generation for electrochemical operation</td>
+                </tr>
+                <tr>
+                  <td>MCU / Controller</td>
+                  <td>TBD</td>
+                  <td>Data acquisition, control, and interface</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2>Overall Schematic</h2>
+          <div class="img-block">
+            <img src="overall-schematic.png" alt="Overall schematic of electrochemical sensor circuit">
+            <div class="caption">Figure: Overall circuit schematic of the electrochemical sensor platform.</div>
+          </div>
+
+          <h2>PCB Layout</h2>
+          <div class="img-block">
+            <img src="overall-pcb-layout.png" alt="PCB layout of electrochemical sensor circuit">
+            <div class="caption">Figure: PCB layout for the electrochemical sensor readout system.</div>
+          </div>
         </div>
 
         <div id="potentiostat" class="tab-content">
           <h1>Potentiostat</h1>
           <p>
-            The potentiostat is responsible for controlling the electrochemical cell bias and
-            maintaining a desired potential relationship among the working, reference, and counter
-            electrodes.
+            The potentiostat is used to control the electrochemical cell bias and maintain the
+            required electrode potential relationship during sensing operation.
           </p>
+
+          <h2>Schematic</h2>
+          <div class="img-block">
+            <img src="potentiostat-schematic.png" alt="Potentiostat schematic">
+            <div class="caption">Figure: Potentiostat schematic used for electrode bias control.</div>
+          </div>
+
+          <h2>Performance</h2>
           <p>
-            In electrochemical sensing systems, stable potential control is critical for ensuring
-            repeatable current responses and accurate sensor measurements.
+            This part can later include performance figures such as bias accuracy, output stability,
+            settling behavior, and electrode control response.
           </p>
-          <ul>
-            <li>Electrode bias control</li>
-            <li>Closed-loop potential regulation</li>
-            <li>Sensor interface stability</li>
-            <li>Integration with low-current readout chain</li>
-          </ul>
-          <p>
-            This block provides the driving foundation for the sensing interface before the output
-            current is sent to the readout circuitry.
-          </p>
+
+          <div class="img-block">
+            <img src="potentiostat-performance.png" alt="Potentiostat performance figure">
+            <div class="caption">Placeholder for potentiostat performance characterization.</div>
+          </div>
+
+          <div class="section-note">
+            Possible future metrics for potentiostat evaluation:
+            <ul>
+              <li>Bias voltage accuracy</li>
+              <li>Settling time</li>
+              <li>Output stability</li>
+              <li>Noise at controlled node</li>
+              <li>Response under varying electrode load</li>
+            </ul>
+          </div>
         </div>
 
         <div id="tia" class="tab-content">
           <h1>Transimpedance Amplifier</h1>
           <p>
-            The transimpedance amplifier (TIA) converts sensor current into a measurable voltage
-            signal. It is one of the most critical blocks in low-current readout systems,
-            especially for nanoamp-level detection.
+            This section presents the TIA block used for low-current readout. In the current version,
+            the amplifier under test is <strong>OPA380 from Texas Instruments</strong>.
           </p>
-          <p>
-            The TIA design emphasizes low input bias current, low noise, stability, and proper
-            gain selection to achieve accurate current-to-voltage conversion.
-          </p>
-          <ul>
-            <li>Nanoamp current detection</li>
-            <li>Low-noise analog front-end design</li>
-            <li>Feedback network optimization</li>
-            <li>Bandwidth and stability tradeoff</li>
-          </ul>
-          <p>
-            This stage strongly influences the overall sensitivity and measurement floor of the
-            entire system.
-          </p>
+
+          <h2>Schematic</h2>
+          <div class="img-block">
+            <img src="tia-schematic.png" alt="TIA schematic">
+            <div class="caption">Figure: Transimpedance amplifier schematic using OPA380.</div>
+          </div>
+
+          <h2>Input Current vs Output Voltage</h2>
+          <div class="img-block">
+            <img src="tia-iv-curve.png" alt="TIA input current versus output voltage">
+            <div class="caption">Figure: Input current to output voltage transfer characteristic.</div>
+          </div>
+
+          <h2>Noise Spectrum</h2>
+          <div class="img-block">
+            <img src="tia-noise-spectrum.png" alt="TIA frequency-domain noise plot">
+            <div class="caption">Figure: Frequency-domain noise characterization of the TIA.</div>
+          </div>
+
+          <div class="section-note">
+            Since the TIA performance is strongly influenced by the selected operational amplifier,
+            only OPA380 has been tested so far in the current implementation.
+          </div>
+
+          <div class="poll-box">
+            <h3>Vote for the Next Op Amp to Test</h3>
+            <p>
+              I plan to evaluate additional op amps for the TIA stage in future updates.
+              Please vote for the op amp you would like to see tested next.
+            </p>
+
+            <div class="poll-option">
+              <span>OPA320</span>
+              <button class="vote-btn" onclick="vote('OPA320')">Vote</button>
+            </div>
+            <div class="poll-option">
+              <span>OPA381</span>
+              <button class="vote-btn" onclick="vote('OPA381')">Vote</button>
+            </div>
+            <div class="poll-option">
+              <span>LMP7721</span>
+              <button class="vote-btn" onclick="vote('LMP7721')">Vote</button>
+            </div>
+            <div class="poll-option">
+              <span>ADA4530-1</span>
+              <button class="vote-btn" onclick="vote('ADA4530-1')">Vote</button>
+            </div>
+            <div class="poll-option">
+              <span>OPA140</span>
+              <button class="vote-btn" onclick="vote('OPA140')">Vote</button>
+            </div>
+
+            <h3 style="margin-top:24px;">Current Ranking</h3>
+            <ol id="rankingList" class="ranking"></ol>
+            <p class="small-note">
+              This ranking is stored locally in your browser for now.
+            </p>
+          </div>
         </div>
 
         <div id="adc" class="tab-content">
           <h1>ADC</h1>
           <p>
-            The ADC converts the conditioned analog voltage into digital data for further
-            acquisition, analysis, and processing.
+            This section presents the ADC stage used to digitize the conditioned analog signal
+            for downstream acquisition and analysis.
           </p>
-          <p>
-            ADC performance affects the final system resolution, dynamic range, and digital
-            measurement quality. Selection and integration of the ADC must match the analog front-end
-            characteristics and expected sensor output range.
-          </p>
-          <ul>
-            <li>Analog-to-digital conversion for sensor readout</li>
-            <li>Resolution and dynamic range considerations</li>
-            <li>Interface with low-noise analog front-end</li>
-            <li>Data acquisition pipeline integration</li>
-          </ul>
-          <p>
-            Combined with proper data acquisition and signal processing, the ADC enables reliable
-            downstream analysis and interpretation of sensor signals.
-          </p>
+
+          <h2>Schematic</h2>
+          <div class="img-block">
+            <img src="adc-schematic.png" alt="ADC schematic">
+            <div class="caption">Figure: ADC circuit schematic in the signal chain.</div>
+          </div>
+
+          <h2>Input Voltage vs Output Voltage</h2>
+          <div class="img-block">
+            <img src="adc-vin-vout-curve.png" alt="ADC input voltage versus output voltage">
+            <div class="caption">Figure: Input voltage to output voltage transfer characteristic of the ADC stage.</div>
+          </div>
+
+          <div class="section-note">
+            Similar to the TIA section, this part emphasizes how the ADC stage translates analog
+            behavior into measurable output for acquisition and processing.
+          </div>
         </div>
       </section>
     </div>
@@ -279,17 +485,51 @@
       const contents = document.querySelectorAll('.tab-content');
       const buttons = document.querySelectorAll('.tab-button');
 
-      contents.forEach(content => {
-        content.classList.remove('active');
-      });
-
-      buttons.forEach(button => {
-        button.classList.remove('active');
-      });
+      contents.forEach(content => content.classList.remove('active'));
+      buttons.forEach(button => button.classList.remove('active'));
 
       document.getElementById(tabId).classList.add('active');
       buttonElement.classList.add('active');
     }
+
+    const defaultVotes = {
+      "OPA320": 0,
+      "OPA381": 0,
+      "LMP7721": 0,
+      "ADA4530-1": 0,
+      "OPA140": 0
+    };
+
+    function getVotes() {
+      const saved = localStorage.getItem('opampVotes');
+      return saved ? JSON.parse(saved) : defaultVotes;
+    }
+
+    function saveVotes(votes) {
+      localStorage.setItem('opampVotes', JSON.stringify(votes));
+    }
+
+    function renderRanking() {
+      const votes = getVotes();
+      const rankingList = document.getElementById('rankingList');
+      const sorted = Object.entries(votes).sort((a, b) => b[1] - a[1]);
+
+      rankingList.innerHTML = '';
+      sorted.forEach(([name, count]) => {
+        const li = document.createElement('li');
+        li.textContent = name + ' — ' + count + ' vote(s)';
+        rankingList.appendChild(li);
+      });
+    }
+
+    function vote(name) {
+      const votes = getVotes();
+      votes[name] = (votes[name] || 0) + 1;
+      saveVotes(votes);
+      renderRanking();
+    }
+
+    renderRanking();
   </script>
 </body>
 </html>
