@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Electrochemical Sensor Circuit Design | Shuaishuai Ling</title>
-  <meta name="description" content="Electrochemical sensor circuit design including overall architecture, potentiostat, TIA, and ADC." />
+  <meta name="description" content="Electrochemical sensor circuit design including potentiostat, DAC, TIA, ADC, and peripheral circuits." />
   <style>
     body {
       margin: 0;
@@ -78,10 +78,6 @@
       font-weight: bold;
     }
 
-    .sidebar-item {
-      width: 100%;
-    }
-
     .tab-button,
     .submenu-toggle,
     .submenu-button {
@@ -115,7 +111,6 @@
     }
 
     .tab-button.active,
-    .submenu-toggle.active,
     .submenu-button.active {
       padding-left: 16px;
     }
@@ -179,7 +174,7 @@
 
     h2 {
       color: #0f172a;
-      margin-top: 34px;
+      margin-top: 32px;
       margin-bottom: 10px;
     }
 
@@ -197,26 +192,6 @@
       padding: 16px 18px;
       border-radius: 8px;
       margin: 20px 0;
-    }
-
-    .img-block {
-      margin: 18px 0 28px;
-    }
-
-    .img-block img {
-      width: 100%;
-      max-width: 950px;
-      display: block;
-      margin: 12px 0;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-      background: white;
-    }
-
-    .caption {
-      font-size: 14px;
-      color: #64748b;
-      margin-top: 6px;
     }
 
     .table-wrap {
@@ -239,48 +214,6 @@
 
     th {
       background: #e2e8f0;
-    }
-
-    .poll-box {
-      margin-top: 28px;
-      padding: 22px;
-      background: #f8fafc;
-      border-radius: 12px;
-      border: 1px solid #dbeafe;
-    }
-
-    .poll-box h3 {
-      margin-top: 0;
-      color: #0f172a;
-    }
-
-    .vote-btn {
-      border: none;
-      background: #2563eb;
-      color: white;
-      padding: 8px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .vote-btn:hover {
-      background: #1d4ed8;
-    }
-
-    .ranking {
-      margin-top: 18px;
-      padding-left: 20px;
-    }
-
-    .ranking li {
-      margin-bottom: 8px;
-    }
-
-    .small-note {
-      font-size: 14px;
-      color: #64748b;
-      margin-top: 12px;
     }
 
     @media (max-width: 900px) {
@@ -313,259 +246,222 @@
       <aside class="sidebar">
         <div class="sidebar-title">Contents</div>
 
-        <div class="sidebar-item">
-          <button class="tab-button active" onclick="showTab('overall', this)">Overall</button>
-        </div>
+        <button class="tab-button active" type="button" onclick="showTab('overall', this)">Overall</button>
+        <button class="tab-button" type="button" onclick="showTab('potentiostat', this)">Potentiostat</button>
+        <button class="tab-button" type="button" onclick="showTab('dac', this)">DAC</button>
 
-        <div class="sidebar-item">
-          <button class="tab-button" onclick="showTab('potentiostat', this)">Potentiostat</button>
-        </div>
-
-        <div class="sidebar-item submenu" id="tiaMenu">
-          <button class="submenu-toggle" onclick="toggleSubmenu('tiaMenu')">
+        <div class="submenu" id="tiaMenu">
+          <button class="submenu-toggle" type="button" onclick="toggleSubmenu('tiaMenu')">
             <span>Transimpedance Amplifier</span>
             <span class="arrow">▶</span>
           </button>
           <div class="submenu-list">
-            <button class="submenu-button" onclick="showTab('tia-opa380', this, 'tiaMenu')">OPA380</button>
+            <button class="submenu-button" type="button" onclick="showTab('tia-opa380', this, 'tiaMenu')">OPA380</button>
           </div>
         </div>
 
-        <div class="sidebar-item submenu" id="adcMenu">
-          <button class="submenu-toggle" onclick="toggleSubmenu('adcMenu')">
+        <div class="submenu" id="adcMenu">
+          <button class="submenu-toggle" type="button" onclick="toggleSubmenu('adcMenu')">
             <span>ADC</span>
             <span class="arrow">▶</span>
           </button>
           <div class="submenu-list">
-            <button class="submenu-button" onclick="showTab('adc-ads1262', this, 'adcMenu')">ADS1262</button>
-            <button class="submenu-button" onclick="showTab('adc-msp430', this, 'adcMenu')">MSP430F6736A</button>
+            <button class="submenu-button" type="button" onclick="showTab('adc-ads1262', this, 'adcMenu')">ADS1262</button>
+            <button class="submenu-button" type="button" onclick="showTab('adc-msp430', this, 'adcMenu')">MSP430F6736A</button>
           </div>
         </div>
+
+        <button class="tab-button" type="button" onclick="showTab('peripherals', this)">Peripheral Circuits</button>
       </aside>
 
       <section class="content-area">
         <div id="overall" class="tab-content active">
           <h1>Overall</h1>
           <p>
-            This section presents the overall architecture of the electrochemical sensor
-            circuit platform, including component selection, schematic design, and PCB layout.
+            This board-level platform is developed for electrochemical sensor readout and
+            low-current measurement. The signal chain includes potentiostat control,
+            DAC bias generation, transimpedance amplification, analog-to-digital conversion,
+            and supporting peripheral subsystems.
           </p>
 
           <div class="section-note">
-            The system is designed for electrochemical sensing and can also be adapted for
-            general low-current measurement applications.
+            The architecture combines analog front-end design, mixed-signal conversion,
+            user interface, storage, environmental monitoring, and power management
+            into one integrated measurement platform.
           </div>
 
-          <h2>Component Selection</h2>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Block</th>
-                  <th>Selected Part</th>
-                  <th>Reason for Selection</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Potentiostat Op Amp</td>
-                  <td>TBD</td>
-                  <td>Stable electrode bias control and analog compatibility</td>
-                </tr>
-                <tr>
-                  <td>TIA Op Amp</td>
-                  <td>OPA380 (TI)</td>
-                  <td>Low-noise transimpedance amplification for current readout</td>
-                </tr>
-                <tr>
-                  <td>ADC Option 1</td>
-                  <td>ADS1262</td>
-                  <td>High-resolution external ADC for precision digitization</td>
-                </tr>
-                <tr>
-                  <td>ADC Option 2</td>
-                  <td>MSP430F6736A on-chip 24-bit ADC</td>
-                  <td>Integrated MCU + ADC solution for system-level simplification</td>
-                </tr>
-                <tr>
-                  <td>Reference / Bias</td>
-                  <td>TBD</td>
-                  <td>Stable bias generation for electrochemical operation</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <h2>Overall Schematic</h2>
-          <div class="img-block">
-            <img src="overall-schematic.png" alt="Overall schematic of electrochemical sensor circuit">
-            <div class="caption">Figure: Overall circuit schematic of the electrochemical sensor platform.</div>
-          </div>
-
-          <h2>PCB Layout</h2>
-          <div class="img-block">
-            <img src="overall-pcb-layout.png" alt="PCB layout of electrochemical sensor circuit">
-            <div class="caption">Figure: PCB layout for the electrochemical sensor readout system.</div>
-          </div>
+          <h2>Main Functional Blocks</h2>
+          <ul>
+            <li>Potentiostat for electrochemical bias control</li>
+            <li>DAC80502 for programmable bias generation</li>
+            <li>OPA380-based transimpedance amplifier for current readout</li>
+            <li>ADS1262 / MSP430F6736A ADC options for digitization</li>
+            <li>Display, storage, environmental sensing, and power management peripherals</li>
+          </ul>
         </div>
 
         <div id="potentiostat" class="tab-content">
           <h1>Potentiostat</h1>
           <p>
-            The potentiostat is used to control the electrochemical cell bias and maintain the
-            required electrode potential relationship during sensing operation.
+            The potentiostat controls the electrochemical cell and maintains the desired
+            voltage relationship between the working, reference, and counter electrodes.
           </p>
 
-          <h2>Schematic</h2>
-          <div class="img-block">
-            <img src="potentiostat-schematic.png" alt="Potentiostat schematic">
-            <div class="caption">Figure: Potentiostat schematic used for electrode bias control.</div>
-          </div>
-
-          <h2>Performance</h2>
-          <p>
-            This part can later include performance figures such as bias accuracy, output stability,
-            settling behavior, and electrode control response.
-          </p>
-
-          <div class="img-block">
-            <img src="potentiostat-performance.png" alt="Potentiostat performance figure">
-            <div class="caption">Placeholder for potentiostat performance characterization.</div>
-          </div>
+          <ul>
+            <li>Electrode bias regulation</li>
+            <li>Closed-loop analog control</li>
+            <li>Core front-end block for electrochemical sensing</li>
+          </ul>
 
           <div class="section-note">
-            Possible future metrics for potentiostat evaluation:
-            <ul>
-              <li>Bias voltage accuracy</li>
-              <li>Settling time</li>
-              <li>Output stability</li>
-              <li>Noise at controlled node</li>
-              <li>Response under varying electrode load</li>
-            </ul>
+            In this system, the potentiostat receives programmable bias support from
+            the DAC stage, enabling flexible electrochemical operating conditions.
+          </div>
+        </div>
+
+        <div id="dac" class="tab-content">
+          <h1>DAC</h1>
+          <p>
+            The <strong>DAC80502</strong> is used to generate the bias voltage for the
+            potentiostat. It provides a programmable and stable voltage source that helps
+            define the electrochemical operating point of the sensor interface.
+          </p>
+
+          <h2>Role in the System</h2>
+          <ul>
+            <li>Provides bias voltage for the potentiostat</li>
+            <li>Improves programmability of electrochemical measurement conditions</li>
+            <li>Supports flexible sensor excitation and control</li>
+          </ul>
+
+          <h2>Why DAC80502</h2>
+          <ul>
+            <li>High-resolution voltage output</li>
+            <li>Suitable for precision bias generation</li>
+            <li>Well matched to analog control applications</li>
+          </ul>
+
+          <div class="section-note">
+            This DAC stage forms the programmable voltage source of the measurement system
+            and directly affects potentiostat bias quality and control flexibility.
           </div>
         </div>
 
         <div id="tia-opa380" class="tab-content">
           <h1>Transimpedance Amplifier — OPA380</h1>
           <p>
-            This section presents the current TIA implementation based on
+            The transimpedance amplifier converts sensor current into a measurable voltage.
+            In the current implementation, the TIA is based on
             <strong>OPA380 from Texas Instruments</strong>.
           </p>
 
-          <h2>Schematic</h2>
-          <div class="img-block">
-            <img src="tia-schematic.png" alt="TIA schematic using OPA380">
-            <div class="caption">Figure: Transimpedance amplifier schematic using OPA380.</div>
-          </div>
-
-          <h2>Input Current vs Output Voltage</h2>
-          <div class="img-block">
-            <img src="tia-iv-curve.png" alt="TIA input current versus output voltage">
-            <div class="caption">Figure: Input current to output voltage transfer characteristic.</div>
-          </div>
-
-          <h2>Noise Spectrum</h2>
-          <div class="img-block">
-            <img src="tia-noise-spectrum.png" alt="TIA frequency-domain noise plot">
-            <div class="caption">Figure: Frequency-domain noise characterization of the OPA380-based TIA.</div>
-          </div>
+          <ul>
+            <li>Low-current readout</li>
+            <li>Current-to-voltage conversion</li>
+            <li>Noise-sensitive analog front-end stage</li>
+          </ul>
 
           <div class="section-note">
-            Since TIA performance is strongly influenced by the selected op amp, only OPA380 has
-            been characterized so far. Additional devices will be added later.
-          </div>
-
-          <div class="poll-box">
-            <h3>Suggest the Next Op Amp to Test</h3>
-            <p>
-              If there is another op amp you would like to see evaluated for the TIA stage,
-              please enter the model below.
-            </p>
-
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
-              <input
-                id="tiaInput"
-                type="text"
-                placeholder="Enter op amp model, e.g. OPA381"
-                style="flex:1; min-width:240px; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px;"
-              />
-              <button class="vote-btn" onclick="submitTiaVote()">Submit</button>
-            </div>
-
-            <h3 style="margin-top:24px;">Current Ranking</h3>
-            <ol id="tiaRankingList" class="ranking"></ol>
-            <p class="small-note">
-              This ranking is currently stored locally in your browser.
-            </p>
+            The TIA is one of the most performance-critical blocks in the signal chain,
+            because its noise, bandwidth, and stability directly affect the final
+            measurement floor and usable dynamic range.
           </div>
         </div>
 
         <div id="adc-ads1262" class="tab-content">
           <h1>ADC — ADS1262</h1>
           <p>
-            This section presents the ADC path based on <strong>ADS1262</strong>, used as an
-            external high-resolution ADC for sensor signal digitization.
+            <strong>ADS1262</strong> is used as an external high-resolution ADC option
+            for digitizing the analog output of the readout chain.
           </p>
 
-          <h2>Schematic</h2>
-          <div class="img-block">
-            <img src="adc-schematic-ads1262.png" alt="ADS1262 schematic">
-            <div class="caption">Figure: ADC schematic using ADS1262.</div>
-          </div>
-
-          <h2>Input Voltage vs Output Voltage</h2>
-          <div class="img-block">
-            <img src="adc-vin-vout-ads1262.png" alt="ADS1262 input voltage versus output voltage">
-            <div class="caption">Figure: Input voltage to output response using ADS1262.</div>
-          </div>
-
-          <div class="poll-box">
-            <h3>Suggest the Next ADC to Test</h3>
-            <p>
-              If there is another ADC you would like to see evaluated in this signal chain,
-              please enter the model below.
-            </p>
-
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
-              <input
-                id="adcInput"
-                type="text"
-                placeholder="Enter ADC model, e.g. ADS1220"
-                style="flex:1; min-width:240px; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px;"
-              />
-              <button class="vote-btn" onclick="submitAdcVote()">Submit</button>
-            </div>
-
-            <h3 style="margin-top:24px;">Current Ranking</h3>
-            <ol id="adcRankingList" class="ranking"></ol>
-            <p class="small-note">
-              This ranking is currently stored locally in your browser.
-            </p>
-          </div>
+          <ul>
+            <li>High-resolution conversion</li>
+            <li>External precision ADC path</li>
+            <li>Suitable for low-level signal digitization</li>
+          </ul>
         </div>
 
         <div id="adc-msp430" class="tab-content">
           <h1>ADC — MSP430F6736A</h1>
           <p>
-            This section presents the ADC path based on the
-            <strong>on-chip 24-bit ADC inside MSP430F6736A</strong>.
+            The <strong>MSP430F6736A</strong> provides an alternative ADC path using the
+            MCU’s on-chip 24-bit ADC, enabling tighter integration of conversion and control.
           </p>
 
-          <h2>Schematic</h2>
-          <div class="img-block">
-            <img src="adc-schematic-msp430.png" alt="MSP430F6736A ADC schematic">
-            <div class="caption">Figure: ADC signal path using MSP430F6736A on-chip 24-bit ADC.</div>
+          <ul>
+            <li>Integrated MCU + ADC solution</li>
+            <li>Reduced external component count</li>
+            <li>System-level simplification</li>
+          </ul>
+        </div>
+
+        <div id="peripherals" class="tab-content">
+          <h1>Peripheral Circuits</h1>
+          <p>
+            In addition to the analog readout chain, the system includes several peripheral
+            circuits for display, storage, environmental monitoring, and power management.
+          </p>
+
+          <h2>Peripheral Overview</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Block</th>
+                  <th>Device</th>
+                  <th>Function</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Display</td>
+                  <td>SSD1306</td>
+                  <td>Local display of measurement information and system status</td>
+                </tr>
+                <tr>
+                  <td>Storage</td>
+                  <td>microSD card</td>
+                  <td>Data logging and storage of measurement results</td>
+                </tr>
+                <tr>
+                  <td>Environment Sensor</td>
+                  <td>BME280</td>
+                  <td>Monitoring environmental parameters such as temperature, humidity, and pressure</td>
+                </tr>
+                <tr>
+                  <td>Power Management</td>
+                  <td>BQ24074</td>
+                  <td>Battery charging and power-path management</td>
+                </tr>
+                <tr>
+                  <td>Boost Converter</td>
+                  <td>TPS61022</td>
+                  <td>Voltage boost stage for required system rails</td>
+                </tr>
+                <tr>
+                  <td>LDO Regulator</td>
+                  <td>TPS7A4700</td>
+                  <td>Low-noise voltage regulation for sensitive analog circuits</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
-          <h2>Input Voltage vs Output Voltage</h2>
-          <div class="img-block">
-            <img src="adc-vin-vout-msp430.png" alt="MSP430F6736A input voltage versus output voltage">
-            <div class="caption">Figure: Input voltage to output response using MSP430F6736A on-chip ADC.</div>
-          </div>
+          <h2>Subsystem Roles</h2>
+          <ul>
+            <li><strong>SSD1306:</strong> provides an embedded user interface for local readout</li>
+            <li><strong>microSD card:</strong> supports measurement data recording</li>
+            <li><strong>BME280:</strong> captures ambient conditions that may influence sensor performance</li>
+            <li><strong>BQ24074:</strong> manages battery charging and input power selection</li>
+            <li><strong>TPS61022:</strong> generates boosted voltage rails where needed</li>
+            <li><strong>TPS7A4700:</strong> supplies low-noise regulated voltage to precision analog stages</li>
+          </ul>
 
           <div class="section-note">
-            Using the MCU’s integrated ADC provides a more compact system-level path and reduces
-            external component count, while introducing a different set of noise and integration tradeoffs.
+            These peripheral circuits extend the system from a simple readout board to a
+            more complete portable measurement platform with user interaction, data logging,
+            environmental awareness, and robust power architecture.
           </div>
         </div>
       </section>
@@ -574,99 +470,40 @@
 
   <script>
     function clearActiveButtons() {
-      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.submenu-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-button').forEach(function(btn) {
+        btn.classList.remove('active');
+      });
+      document.querySelectorAll('.submenu-button').forEach(function(btn) {
+        btn.classList.remove('active');
+      });
     }
 
     function clearActiveTabs() {
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(function(tab) {
+        tab.classList.remove('active');
+      });
     }
 
-    function showTab(tabId, buttonElement, submenuId = null) {
+    function showTab(tabId, buttonElement, submenuId) {
       clearActiveButtons();
       clearActiveTabs();
 
-      document.getElementById(tabId).classList.add('active');
-      buttonElement.classList.add('active');
+      var target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+      if (buttonElement) buttonElement.classList.add('active');
 
       if (submenuId) {
-        document.getElementById(submenuId).classList.add('open');
+        var menu = document.getElementById(submenuId);
+        if (menu) menu.classList.add('open');
       }
     }
 
     function toggleSubmenu(menuId) {
-      document.getElementById(menuId).classList.toggle('open');
-    }
-
-    function normalizeChipName(name) {
-      return name.trim().replace(/\s+/g, ' ');
-    }
-
-    function getStoredVotes(key) {
-      const saved = localStorage.getItem(key);
-      return saved ? JSON.parse(saved) : {};
-    }
-
-    function saveStoredVotes(key, data) {
-      localStorage.setItem(key, JSON.stringify(data));
-    }
-
-    function sortVotes(votesObject) {
-      return Object.entries(votesObject).sort((a, b) => {
-        if (b[1] !== a[1]) return b[1] - a[1];
-        return a[0].localeCompare(b[0]);
-      });
-    }
-
-    function renderRanking(listId, storageKey) {
-      const votes = getStoredVotes(storageKey);
-      const rankingList = document.getElementById(listId);
-      if (!rankingList) return;
-
-      const sorted = sortVotes(votes);
-      rankingList.innerHTML = '';
-
-      if (sorted.length === 0) {
-        const li = document.createElement('li');
-        li.textContent = 'No suggestions yet.';
-        rankingList.appendChild(li);
-        return;
+      var menu = document.getElementById(menuId);
+      if (menu) {
+        menu.classList.toggle('open');
       }
-
-      sorted.forEach(([name, count]) => {
-        const li = document.createElement('li');
-        li.textContent = `${name} — ${count} vote(s)`;
-        rankingList.appendChild(li);
-      });
     }
-
-    function submitVote(inputId, storageKey, listId) {
-      const input = document.getElementById(inputId);
-      const chipName = normalizeChipName(input.value);
-
-      if (!chipName) {
-        alert('Please enter a chip model first.');
-        return;
-      }
-
-      const votes = getStoredVotes(storageKey);
-      votes[chipName] = (votes[chipName] || 0) + 1;
-      saveStoredVotes(storageKey, votes);
-
-      input.value = '';
-      renderRanking(listId, storageKey);
-    }
-
-    function submitTiaVote() {
-      submitVote('tiaInput', 'tiaChipVotes', 'tiaRankingList');
-    }
-
-    function submitAdcVote() {
-      submitVote('adcInput', 'adcChipVotes', 'adcRankingList');
-    }
-
-    renderRanking('tiaRankingList', 'tiaChipVotes');
-    renderRanking('adcRankingList', 'adcChipVotes');
   </script>
 </body>
 </html>
