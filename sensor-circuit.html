@@ -4,20 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Electrochemical Sensor Circuit Design | Shuaishuai Ling</title>
-  <meta name="description" content="Electrochemical sensor circuit design including potentiostat, DAC, TIA, ADC, PCB layout, measured performance, sensor response, GitHub code, and PC software." />
+  <meta name="description" content="Electrochemical sensor circuit design portfolio page including schematic, PCB layout, TIA/ADC performance, electrochemical signal analysis, PC software, and GitHub code structure." />
   <style>
     :root {
-      --navy: #0f172a;
-      --blue: #2563eb;
-      --light-blue: #dbeafe;
-      --soft-blue: #eef2ff;
-      --slate: #334155;
-      --muted: #64748b;
-      --border: #cbd5e1;
-      --panel: #ffffff;
       --bg: #f7f9fc;
-      --green: #16a34a;
-      --orange: #ea580c;
+      --text: #1e293b;
+      --muted: #64748b;
+      --card: #ffffff;
+      --dark: #0f172a;
+      --blue: #2563eb;
+      --blue-soft: #dbeafe;
+      --line: #cbd5e1;
+      --soft: #f8fafc;
+      --green: #059669;
+      --amber: #d97706;
       --purple: #7c3aed;
     }
 
@@ -25,21 +25,21 @@
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
       line-height: 1.7;
-      color: #222;
+      color: var(--text);
       background: var(--bg);
     }
 
     header {
-      background: var(--navy);
+      background: var(--dark);
       color: white;
       padding: 18px 0;
     }
 
     .container {
       width: 92%;
-      max-width: 1250px;
+      max-width: 1280px;
       margin: 0 auto;
     }
 
@@ -53,7 +53,7 @@
 
     .site-title {
       font-size: 28px;
-      font-weight: bold;
+      font-weight: 700;
       margin: 0;
     }
 
@@ -74,91 +74,54 @@
     }
 
     .sidebar {
-      width: 300px;
-      background: white;
-      border-radius: 14px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      width: 285px;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
       padding: 18px 0;
       flex-shrink: 0;
       position: sticky;
       top: 20px;
-      max-height: calc(100vh - 40px);
-      overflow-y: auto;
     }
 
     .sidebar-title {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--muted);
       padding: 0 20px 10px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      font-weight: bold;
+      font-weight: 700;
     }
 
-    .tab-button,
-    .submenu-toggle,
-    .submenu-button {
+    .tab-button {
       display: block;
       width: 100%;
       border: none;
       background: transparent;
       text-align: left;
       cursor: pointer;
-      color: var(--navy);
-      transition: background 0.2s ease;
-      font-size: 16px;
+      color: var(--dark);
+      transition: background 0.2s ease, color 0.2s ease;
+      font-size: 15.5px;
+      padding: 13px 20px;
     }
 
-    .tab-button,
-    .submenu-toggle { padding: 14px 20px; }
+    .tab-button:hover { background: #eef2ff; }
 
-    .tab-button:hover,
-    .submenu-toggle:hover,
-    .submenu-button:hover { background: var(--soft-blue); }
-
-    .tab-button.active,
-    .submenu-button.active {
-      background: var(--light-blue);
-      font-weight: bold;
+    .tab-button.active {
+      background: var(--blue-soft);
+      font-weight: 700;
       border-left: 4px solid var(--blue);
       padding-left: 16px;
-    }
-
-    .submenu-toggle {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-right: 16px;
-    }
-
-    .arrow {
-      font-size: 14px;
-      color: #475569;
-      transition: transform 0.2s ease;
-    }
-
-    .submenu.open .arrow { transform: rotate(90deg); }
-
-    .submenu-list {
-      display: none;
-      padding: 4px 0 8px 0;
-      background: #fafcff;
-    }
-
-    .submenu.open .submenu-list { display: block; }
-
-    .submenu-button {
-      padding: 12px 20px 12px 40px;
-      font-size: 15px;
-      color: var(--slate);
+      color: #1d4ed8;
     }
 
     .content-area {
       flex: 1;
-      background: white;
-      border-radius: 14px;
-      padding: 32px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      background: var(--card);
+      border-radius: 16px;
+      padding: 34px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
       min-height: 760px;
     }
 
@@ -166,205 +129,374 @@
     .tab-content.active { display: block; }
 
     h1 {
-      color: var(--navy);
+      color: var(--dark);
       margin-top: 0;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
       font-size: 34px;
       line-height: 1.25;
     }
 
     h2 {
-      color: var(--navy);
-      margin-top: 32px;
-      margin-bottom: 10px;
+      color: var(--dark);
+      margin-top: 34px;
+      margin-bottom: 12px;
+      font-size: 25px;
     }
 
     h3 {
-      color: var(--navy);
-      margin-bottom: 8px;
+      color: #172554;
+      margin-top: 24px;
+      margin-bottom: 10px;
+      font-size: 20px;
     }
 
-    p { color: var(--slate); }
+    p { color: #334155; }
+
     ul { padding-left: 20px; }
 
+    .lead {
+      font-size: 17px;
+      color: #334155;
+      max-width: 950px;
+    }
+
     .section-note {
-      background: #f8fafc;
+      background: var(--soft);
       border-left: 4px solid var(--blue);
       padding: 16px 18px;
-      border-radius: 8px;
+      border-radius: 10px;
       margin: 20px 0;
     }
 
-    .warning-note {
-      background: #fff7ed;
-      border-left: 4px solid var(--orange);
-      padding: 16px 18px;
-      border-radius: 8px;
-      margin: 20px 0;
-    }
-
-    .success-note {
-      background: #f0fdf4;
-      border-left: 4px solid var(--green);
-      padding: 16px 18px;
-      border-radius: 8px;
-      margin: 20px 0;
-    }
-
-    .grid-2 {
+    .grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
-      margin-top: 18px;
     }
 
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 18px;
-    }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
     .card {
       border: 1px solid #e2e8f0;
       border-radius: 14px;
-      background: #ffffff;
-      padding: 20px;
-      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
-    }
-
-    .metric {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      border: 1px solid #e2e8f0;
-      background: #f8fafc;
-      border-radius: 14px;
+      background: #fff;
       padding: 18px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
     }
 
-    .metric-value {
-      font-size: 26px;
-      font-weight: bold;
-      color: var(--navy);
+    .card h3 { margin-top: 0; }
+
+    .tag {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 3px 10px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-size: 12px;
+      font-weight: 700;
+      margin: 2px 4px 8px 0;
     }
 
-    .metric-label {
-      font-size: 14px;
-      color: var(--muted);
-    }
+    .tag.green { background: #dcfce7; color: #166534; }
+    .tag.amber { background: #fef3c7; color: #92400e; }
+    .tag.purple { background: #ede9fe; color: #5b21b6; }
 
     .table-wrap {
       overflow-x: auto;
-      margin-top: 16px;
+      margin: 16px 0 22px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       background: white;
+      font-size: 14.5px;
     }
 
     th, td {
-      border: 1px solid var(--border);
-      padding: 12px;
+      border: 1px solid var(--line);
+      padding: 11px;
       text-align: left;
       vertical-align: top;
     }
 
-    th { background: #e2e8f0; }
+    th { background: #e2e8f0; color: var(--dark); }
 
-    .figure-card {
-      border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 18px;
-      background: #fbfdff;
-      margin-top: 18px;
-    }
-
-    .figure-title {
-      font-weight: bold;
-      color: var(--navy);
-      margin-bottom: 8px;
-    }
-
-    .figure-caption {
-      color: var(--muted);
-      font-size: 14px;
-      margin-top: 8px;
-    }
-
-    .placeholder-box {
+    .placeholder {
       border: 2px dashed #94a3b8;
       border-radius: 14px;
-      min-height: 260px;
+      min-height: 210px;
+      background:
+        linear-gradient(135deg, rgba(37,99,235,0.05), rgba(124,58,237,0.05));
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 24px;
-      color: var(--muted);
+      padding: 22px;
+      color: #475569;
+      margin: 14px 0;
+    }
+
+    .placeholder.small { min-height: 150px; }
+    .placeholder strong { display: block; color: #0f172a; font-size: 16px; margin-bottom: 6px; }
+
+    .architecture {
+      margin: 24px 0;
+      padding: 22px;
       background: #f8fafc;
-    }
-
-    .diagram {
-      width: 100%;
-      max-width: 900px;
-      display: block;
-      margin: 8px auto 0;
-    }
-
-    .code-block {
-      background: #0f172a;
-      color: #e2e8f0;
-      padding: 16px;
-      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
       overflow-x: auto;
-      font-family: Consolas, Monaco, monospace;
-      font-size: 14px;
-      line-height: 1.6;
     }
 
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+    .flow {
+      min-width: 860px;
+      display: grid;
+      grid-template-columns: 1fr 70px 1fr 70px 1fr 70px 1fr;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .flow-row {
+      min-width: 860px;
+      display: grid;
+      grid-template-columns: 1fr 70px 1fr 70px 1fr 70px 1fr;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
       margin-top: 14px;
     }
 
-    .pill {
+    .block {
+      background: white;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 14px 12px;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+      min-height: 76px;
+    }
+
+    .block strong {
+      display: block;
+      color: #1e3a8a;
+      margin-bottom: 4px;
+    }
+
+    .arrow {
+      font-size: 28px;
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .arrow.down {
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .caption {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .code-tree {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 14px;
+      padding: 18px;
+      overflow-x: auto;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .metric-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .metric {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .metric strong {
+      color: var(--dark);
+      display: block;
+    }
+
+    .todo {
+      background: #fff7ed;
+      border-left: 4px solid #f97316;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin: 14px 0;
+    }
+
+
+
+    .submenu {
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .submenu-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+      color: var(--dark);
+      transition: background 0.2s ease, color 0.2s ease;
+      font-size: 15.5px;
+      padding: 13px 20px;
+      font-family: inherit;
+    }
+
+    .submenu-toggle:hover { background: #eef2ff; }
+
+    .submenu-toggle.active {
+      background: var(--blue-soft);
+      font-weight: 700;
+      border-left: 4px solid var(--blue);
+      padding-left: 16px;
+      color: #1d4ed8;
+    }
+
+    .submenu-arrow {
+      color: #64748b;
+      font-size: 13px;
+      transition: transform 0.2s ease;
+    }
+
+    .submenu.open .submenu-arrow {
+      transform: rotate(90deg);
+    }
+
+    .submenu-list {
+      display: none;
+      padding: 4px 0 8px;
+      background: #fafcff;
+    }
+
+    .submenu.open .submenu-list {
+      display: block;
+    }
+
+    .submenu-button {
+      display: block;
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+      color: #334155;
+      transition: background 0.2s ease, color 0.2s ease;
+      font-size: 14.5px;
+      padding: 10px 20px 10px 38px;
+      font-family: inherit;
+    }
+
+    .submenu-button:hover {
       background: #eef2ff;
       color: #1d4ed8;
-      border-radius: 999px;
-      padding: 6px 12px;
+    }
+
+    .submenu-button.active {
+      background: #e0f2fe;
+      color: #075985;
+      font-weight: 700;
+      border-left: 4px solid #0ea5e9;
+      padding-left: 34px;
+    }
+
+
+    details.nav-group {
+      border-top: 1px solid #f1f5f9;
+    }
+
+    details.nav-group > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 13px 20px;
+      color: var(--dark);
+      font-size: 15.5px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    details.nav-group > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details.nav-group > summary:hover {
+      background: #eef2ff;
+    }
+
+    details.nav-group[open] > summary {
+      background: var(--blue-soft);
+      border-left: 4px solid var(--blue);
+      padding-left: 16px;
+      color: #1d4ed8;
+    }
+
+    details.nav-group > summary::after {
+      content: "▶";
+      color: #64748b;
       font-size: 13px;
-      font-weight: bold;
+      transition: transform 0.2s ease;
     }
 
-    .button-link {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      background: var(--blue);
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
+    details.nav-group[open] > summary::after {
+      transform: rotate(90deg);
     }
 
-    .button-link.secondary {
-      background: #475569;
+    .nav-sublist {
+      background: #fafcff;
+      padding: 4px 0 8px;
     }
 
-    .small {
-      color: var(--muted);
-      font-size: 14px;
+    .nav-subitem {
+      display: block;
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+      color: #334155;
+      transition: background 0.2s ease, color 0.2s ease;
+      font-size: 14.5px;
+      padding: 10px 20px 10px 38px;
     }
 
-    @media (max-width: 900px) {
+    .nav-subitem:hover {
+      background: #eef2ff;
+      color: #1d4ed8;
+    }
+
+    .nav-subitem.active {
+      background: #e0f2fe;
+      color: #075985;
+      font-weight: 700;
+      border-left: 4px solid #0ea5e9;
+      padding-left: 34px;
+    }
+
+    @media (max-width: 980px) {
       .page-layout { flex-direction: column; }
-      .sidebar { width: 100%; position: static; max-height: none; }
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .sidebar { width: 100%; position: static; }
+      .grid.two, .grid.three, .metric-list { grid-template-columns: 1fr; }
       .content-area { padding: 24px; }
     }
   </style>
@@ -387,579 +519,633 @@
       <aside class="sidebar">
         <div class="sidebar-title">Contents</div>
 
-        <button class="tab-button active" type="button" onclick="showTab('overall', this)">Overall</button>
-        <button class="tab-button" type="button" onclick="showTab('schematic', this)">Schematic</button>
-        <button class="tab-button" type="button" onclick="showTab('pcb-layout', this)">PCB Layout</button>
-        <button class="tab-button" type="button" onclick="showTab('performance', this)">TIA / ADC Performance</button>
-        <button class="tab-button" type="button" onclick="showTab('sensor-signal', this)">Sensor Output Signal</button>
-        <button class="tab-button" type="button" onclick="showTab('system-response', this)">System Response</button>
-
-        <div class="submenu" id="blocksMenu">
-          <button class="submenu-toggle" type="button" onclick="toggleSubmenu('blocksMenu')">
-            <span>Circuit Blocks</span>
-            <span class="arrow">▶</span>
-          </button>
-          <div class="submenu-list">
-            <button class="submenu-button" type="button" onclick="showTab('potentiostat', this, 'blocksMenu')">Potentiostat</button>
-            <button class="submenu-button" type="button" onclick="showTab('dac', this, 'blocksMenu')">DAC80502</button>
-            <button class="submenu-button" type="button" onclick="showTab('tia-opa380', this, 'blocksMenu')">OPA380 TIA</button>
-            <button class="submenu-button" type="button" onclick="showTab('adc-ads1262', this, 'blocksMenu')">ADS1262 ADC</button>
-            <button class="submenu-button" type="button" onclick="showTab('adc-msp430', this, 'blocksMenu')">MSP430F6736A ADC</button>
-            <button class="submenu-button" type="button" onclick="showTab('peripherals', this, 'blocksMenu')">Peripherals</button>
+        <details class="nav-group" open>
+          <summary onclick="showTab('overall', null, null, null)">Overall</summary>
+          <div class="nav-sublist">
+            <button class="nav-subitem" type="button" onclick="showTab('overall', this, null, 'overall-architecture')">System Architecture</button>
+            <button class="nav-subitem" type="button" onclick="showTab('overall', this, null, 'overall-hardware')">Hardware Options</button>
+            <button class="nav-subitem" type="button" onclick="showTab('overall', this, null, 'overall-roadmap')">Content Roadmap</button>
           </div>
-        </div>
+        </details>
 
-        <button class="tab-button" type="button" onclick="showTab('github', this)">GitHub Code</button>
-        <button class="tab-button" type="button" onclick="showTab('pc-software', this)">PC Software</button>
+        <details class="nav-group">
+          <summary onclick="showTab('schematic-layout', null, null, null)">Schematic and Layout</summary>
+          <div class="nav-sublist">
+            <button class="nav-subitem" type="button" onclick="showTab('schematic-layout', this, null, 'schematic-potentiostat')">Potentiostat</button>
+            <button class="nav-subitem" type="button" onclick="showTab('schematic-layout', this, null, 'schematic-tia')">TIA</button>
+            <button class="nav-subitem" type="button" onclick="showTab('schematic-layout', this, null, 'schematic-adc')">ADC</button>
+            <button class="nav-subitem" type="button" onclick="showTab('schematic-layout', this, null, 'schematic-dac')">DAC</button>
+            <button class="nav-subitem" type="button" onclick="showTab('schematic-layout', this, null, 'schematic-peripheral')">Peripheral Circuits</button>
+            <button class="nav-subitem" type="button" onclick="showTab('schematic-layout', this, null, 'schematic-layout-section')">Layout</button>
+          </div>
+        </details>
+
+        <details class="nav-group">
+          <summary onclick="showTab('tia-performance', null, null, null)">TIA Performance</summary>
+          <div class="nav-sublist">
+            <button class="nav-subitem" type="button" onclick="showTab('tia-performance', this, null, 'tia-opa380')">OPA380 TIA</button>
+            <button class="nav-subitem" type="button" onclick="showTab('tia-performance', this, null, 'tia-lmp7721')">LMP7721 TIA</button>
+            <button class="nav-subitem" type="button" onclick="showTab('tia-performance', this, null, 'tia-metrics')">Recommended Metrics</button>
+          </div>
+        </details>
+
+        <details class="nav-group">
+          <summary onclick="showTab('adc-performance', null, null, null)">ADC Performance</summary>
+          <div class="nav-sublist">
+            <button class="nav-subitem" type="button" onclick="showTab('adc-performance', this, null, 'adc-ads1262-section')">ADS1262</button>
+            <button class="nav-subitem" type="button" onclick="showTab('adc-performance', this, null, 'adc-sd24b-section')">MSP430F6736A SD24B</button>
+            <button class="nav-subitem" type="button" onclick="showTab('adc-performance', this, null, 'adc-comparison')">ADC Comparison</button>
+          </div>
+        </details>
+
+        <details class="nav-group">
+          <summary onclick="showTab('signal-analysis', null, null, null)">Signal Analysis</summary>
+          <div class="nav-sublist">
+            <button class="nav-subitem" type="button" onclick="showTab('signal-analysis', this, null, 'signal-ca')">H2 Sensor CA Response</button>
+            <button class="nav-subitem" type="button" onclick="showTab('signal-analysis', this, null, 'signal-dpv')">DPV Response</button>
+            <button class="nav-subitem" type="button" onclick="showTab('signal-analysis', this, null, 'signal-eis')">EIS Analysis</button>
+            <button class="nav-subitem" type="button" onclick="showTab('signal-analysis', this, null, 'signal-h2-concentration')">Hydrogen Concentration Test</button>
+          </div>
+        </details>
+
+        <details class="nav-group">
+          <summary onclick="showTab('pc-software', null, null, null)">PC Software</summary>
+          <div class="nav-sublist">
+            <button class="nav-subitem" type="button" onclick="showTab('pc-software', this, null, 'software-architecture')">Software Architecture</button>
+            <button class="nav-subitem" type="button" onclick="showTab('pc-software', this, null, 'software-functions')">Implemented Functions</button>
+            <button class="nav-subitem" type="button" onclick="showTab('pc-software', this, null, 'software-improvements')">Suggested Improvements</button>
+            <button class="nav-subitem" type="button" onclick="showTab('pc-software', this, null, 'software-screenshot')">GUI Screenshot</button>
+          </div>
+        </details>
+
+        <details class="nav-group">
+          <summary onclick="showTab('github-code', null, null, null)">GitHub Code</summary>
+          <div class="nav-sublist">
+            <button class="nav-subitem" type="button" onclick="showTab('github-code', this, null, 'github-structure')">Repository Structure</button>
+            <button class="nav-subitem" type="button" onclick="showTab('github-code', this, null, 'github-cc2640')">CC2640R2F Series Code</button>
+            <button class="nav-subitem" type="button" onclick="showTab('github-code', this, null, 'github-msp430')">MSP430F6736A Series Code</button>
+            <button class="nav-subitem" type="button" onclick="showTab('github-code', this, null, 'github-pc')">PC Software Code</button>
+          </div>
+        </details>
       </aside>
 
       <section class="content-area">
         <div id="overall" class="tab-content active">
-          <h1>Electrochemical Sensor Circuit Design</h1>
-          <p>
-            This board-level platform is developed for electrochemical sensor readout,
-            nanoamp-level current measurement, and portable data acquisition. The complete
-            signal chain includes electrochemical bias control, current-to-voltage conversion,
-            high-resolution digitization, embedded data handling, and PC-side visualization.
+          <h1>Overall</h1>
+          <p class="lead">
+            This project focuses on a portable electrochemical sensor readout platform for nanoampere-level current measurement.
+            The system integrates potentiostat control, programmable DAC biasing, low-current TIA readout, high-resolution ADC acquisition,
+            embedded firmware, and a Python-based PC software interface.
           </p>
 
           <div class="section-note">
-            The goal of this project is to build a complete measurement system rather than
-            only a single analog circuit. The design connects the electrochemical cell,
-            potentiostat, TIA, ADC, MCU firmware, data logging, and upper-computer software
-            into one analyzable platform.
+            <strong>Design goal:</strong> build a complete electrochemical measurement system that can bias the sensor, convert the sensor current to voltage,
+            digitize the response, transmit data to the PC, and support CA, CV/LSV, DPV/SWV, and EIS-style measurements.
           </div>
 
-          <h2>System Architecture</h2>
-          <div class="figure-card">
-            <div class="figure-title">Measurement chain overview</div>
-            <svg class="diagram" viewBox="0 0 960 270" role="img" aria-label="Electrochemical sensor readout architecture diagram">
-              <defs>
-                <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                  <path d="M0,0 L0,6 L9,3 z" fill="#2563eb" />
-                </marker>
-              </defs>
-              <rect x="25" y="80" width="120" height="80" rx="14" fill="#eef2ff" stroke="#2563eb" />
-              <text x="85" y="112" text-anchor="middle" font-size="15" fill="#0f172a" font-weight="bold">Sensor Cell</text>
-              <text x="85" y="136" text-anchor="middle" font-size="12" fill="#334155">WE / RE / CE</text>
-
-              <rect x="190" y="80" width="135" height="80" rx="14" fill="#f0fdf4" stroke="#16a34a" />
-              <text x="258" y="112" text-anchor="middle" font-size="15" fill="#0f172a" font-weight="bold">Potentiostat</text>
-              <text x="258" y="136" text-anchor="middle" font-size="12" fill="#334155">Bias control</text>
-
-              <rect x="370" y="80" width="125" height="80" rx="14" fill="#fff7ed" stroke="#ea580c" />
-              <text x="433" y="112" text-anchor="middle" font-size="15" fill="#0f172a" font-weight="bold">TIA</text>
-              <text x="433" y="136" text-anchor="middle" font-size="12" fill="#334155">I-to-V</text>
-
-              <rect x="540" y="80" width="125" height="80" rx="14" fill="#f5f3ff" stroke="#7c3aed" />
-              <text x="603" y="112" text-anchor="middle" font-size="15" fill="#0f172a" font-weight="bold">ADC</text>
-              <text x="603" y="136" text-anchor="middle" font-size="12" fill="#334155">24-bit readout</text>
-
-              <rect x="710" y="80" width="105" height="80" rx="14" fill="#ecfeff" stroke="#0891b2" />
-              <text x="763" y="112" text-anchor="middle" font-size="15" fill="#0f172a" font-weight="bold">MCU</text>
-              <text x="763" y="136" text-anchor="middle" font-size="12" fill="#334155">Control + log</text>
-
-              <rect x="845" y="80" width="90" height="80" rx="14" fill="#f8fafc" stroke="#64748b" />
-              <text x="890" y="112" text-anchor="middle" font-size="15" fill="#0f172a" font-weight="bold">PC</text>
-              <text x="890" y="136" text-anchor="middle" font-size="12" fill="#334155">GUI + plots</text>
-
-              <line x1="145" y1="120" x2="185" y2="120" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow)" />
-              <line x1="325" y1="120" x2="365" y2="120" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow)" />
-              <line x1="495" y1="120" x2="535" y2="120" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow)" />
-              <line x1="665" y1="120" x2="705" y2="120" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow)" />
-              <line x1="815" y1="120" x2="840" y2="120" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow)" />
-
-              <rect x="270" y="190" width="150" height="50" rx="12" fill="#dbeafe" stroke="#2563eb" />
-              <text x="345" y="222" text-anchor="middle" font-size="14" fill="#0f172a" font-weight="bold">DAC80502 Bias</text>
-              <line x1="345" y1="190" x2="258" y2="164" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)" />
-
-              <rect x="515" y="190" width="160" height="50" rx="12" fill="#e2e8f0" stroke="#64748b" />
-              <text x="595" y="222" text-anchor="middle" font-size="14" fill="#0f172a" font-weight="bold">Power + Reference</text>
-              <line x1="595" y1="190" x2="603" y2="164" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
-            </svg>
-            <div class="figure-caption">Replace this overview with a higher-resolution system block diagram if available.</div>
-          </div>
-
-          <h2>Main Functional Blocks</h2>
-          <div class="grid-3">
-            <div class="card"><h3>Bias Control</h3><p>Potentiostat and DAC stage generate a stable and programmable electrochemical operating point.</p></div>
-            <div class="card"><h3>Low-Current Readout</h3><p>OPA380-based TIA converts nanoamp-level sensor current into voltage for digitization.</p></div>
-            <div class="card"><h3>Data Acquisition</h3><p>ADS1262 or MSP430F6736A ADC path converts the analog signal into digital data for logging and analysis.</p></div>
-          </div>
-        </div>
-
-        <div id="schematic" class="tab-content">
-          <h1>Schematic Design</h1>
-          <p>
-            The schematic is organized by function: electrochemical interface, potentiostat loop,
-            DAC bias source, transimpedance amplifier, ADC input network, MCU interface,
-            power management, display, storage, and environmental sensing.
-          </p>
-
-          <div class="grid-2">
-            <div class="figure-card">
-              <div class="figure-title">Schematic page: analog front end</div>
-              <div class="placeholder-box">
-                Upload or replace with schematic screenshot:<br />
-                potentiostat + WE/RE/CE interface + TIA input network.
-              </div>
-              <div class="figure-caption">Recommended file: <strong>assets/schematic_afe.png</strong></div>
+          <h2 id="overall-architecture">System Architecture</h2>
+          <div class="architecture">
+            <div class="flow">
+              <div class="block"><strong>PC Software</strong>PySide6 GUI<br>data display / CSV logging</div>
+              <div class="arrow">⇄</div>
+              <div class="block"><strong>MCU</strong>CC2640R2F / MSP430F6736A<br>control + UART protocol</div>
+              <div class="arrow">→</div>
+              <div class="block"><strong>DAC</strong>DAC80502<br>programmable bias</div>
+              <div class="arrow">→</div>
+              <div class="block"><strong>Potentiostat</strong>WE / RE / CE control<br>electrode bias regulation</div>
             </div>
-            <div class="figure-card">
-              <div class="figure-title">Schematic page: ADC and digital interface</div>
-              <div class="placeholder-box">
-                Upload or replace with schematic screenshot:<br />
-                ADS1262 / MSP430 ADC input, SPI/I2C/UART, MCU connections.
-              </div>
-              <div class="figure-caption">Recommended file: <strong>assets/schematic_adc_mcu.png</strong></div>
+            <div class="flow-row">
+              <div></div>
+              <div></div>
+              <div class="arrow down">↑</div>
+              <div></div>
+              <div class="arrow down">↓</div>
+              <div></div>
+              <div></div>
+            </div>
+            <div class="flow-row">
+              <div class="block"><strong>Data Storage</strong>CSV / microSD<br>measurement records</div>
+              <div class="arrow">←</div>
+              <div class="block"><strong>ADC</strong>ADS1262 / SD24B<br>high-resolution digitization</div>
+              <div class="arrow">←</div>
+              <div class="block"><strong>TIA</strong>OPA380 / LMP7721<br>current-to-voltage conversion</div>
+              <div class="arrow">←</div>
+              <div class="block"><strong>Sensor</strong>H2 electrochemical sensor<br>current output</div>
+            </div>
+            <p class="caption">
+              The MCU sends bias settings to the DAC, controls the measurement sequence, receives ADC data, and streams results to the PC software.
+              The added MCU → DAC control path highlights the programmable bias loop.
+            </p>
+          </div>
+
+          <h2 id="overall-hardware">Hardware Options</h2>
+          <div class="grid two">
+            <div class="card">
+              <h3>TIA Options</h3>
+              <span class="tag">OPA380</span>
+              <span class="tag">LMP7721</span>
+              <p>
+                Two TIA implementations are documented. OPA380 is suitable for precision photodiode/electrochemical current readout,
+                while LMP7721 is intended for ultra-low input bias current and very high impedance sensing conditions.
+              </p>
+            </div>
+            <div class="card">
+              <h3>ADC Options</h3>
+              <span class="tag green">ADS1262</span>
+              <span class="tag green">MSP430F6736A SD24B</span>
+              <p>
+                The platform supports an external high-resolution ADC path using ADS1262 and an integrated ADC path using the SD24B module
+                inside MSP430F6736A.
+              </p>
             </div>
           </div>
 
-          <h2>Design Notes</h2>
-          <ul>
-            <li><strong>Electrode interface:</strong> working, reference, and counter electrode connections are separated from noisy digital routing.</li>
-            <li><strong>Potentiostat loop:</strong> the reference electrode voltage is sensed with high input impedance, while the counter electrode is driven to maintain the programmed WE–RE bias.</li>
-            <li><strong>TIA input:</strong> the inverting input is treated as the most sensitive node and should be protected from leakage, contamination, and long routing.</li>
-            <li><strong>ADC front end:</strong> anti-aliasing, reference stability, and input common-mode range should be checked together with the selected ADC configuration.</li>
-            <li><strong>Power tree:</strong> analog rails and references are separated from digital switching noise through regulator choice, filtering, and layout strategy.</li>
-          </ul>
-
-          <div class="warning-note">
-            For publication or portfolio display, avoid exposing unreleased proprietary details. A simplified schematic screenshot with the key signal path highlighted is often clearer than a full raw schematic page.
-          </div>
-        </div>
-
-        <div id="pcb-layout" class="tab-content">
-          <h1>PCB Layout</h1>
-          <p>
-            The PCB layout focuses on low leakage, low noise, and stable mixed-signal operation.
-            The analog front end is placed close to the electrode connector, while digital blocks,
-            display, storage, and power switching circuits are kept away from the TIA summing node.
-          </p>
-
-          <div class="grid-2">
-            <div class="figure-card">
-              <div class="figure-title">Top layer layout</div>
-              <div class="placeholder-box">
-                Upload top-layer PCB screenshot here.<br />
-                Highlight electrode connector, potentiostat, TIA, ADC, MCU, and power blocks.
-              </div>
-              <div class="figure-caption">Recommended file: <strong>assets/pcb_top.png</strong></div>
-            </div>
-            <div class="figure-card">
-              <div class="figure-title">Bottom layer / ground strategy</div>
-              <div class="placeholder-box">
-                Upload bottom-layer or ground-plane screenshot here.<br />
-                Mark analog ground, digital ground, guard/keepout regions, and return paths.
-              </div>
-              <div class="figure-caption">Recommended file: <strong>assets/pcb_bottom.png</strong></div>
-            </div>
-          </div>
-
-          <h2>Layout Strategy</h2>
+          <h2 id="overall-roadmap">Content Roadmap</h2>
           <div class="table-wrap">
             <table>
               <thead>
-                <tr><th>Layout Area</th><th>Key Concern</th><th>Implementation Strategy</th></tr>
+                <tr>
+                  <th>Section</th>
+                  <th>Purpose</th>
+                  <th>Data / Figure Status</th>
+                </tr>
               </thead>
               <tbody>
-                <tr><td>TIA input node</td><td>Leakage and parasitic capacitance</td><td>Short trace, clean surface, guard/keepout region, avoid routing under the summing junction.</td></tr>
-                <tr><td>Reference electrode path</td><td>High impedance sensing</td><td>Route away from digital clocks and switching power components.</td></tr>
-                <tr><td>ADC reference/input</td><td>Noise and drift</td><td>Use local decoupling, short reference routing, and proper input filtering.</td></tr>
-                <tr><td>Digital interface</td><td>Clock coupling</td><td>Keep SPI/I2C/UART traces away from TIA and electrode connector.</td></tr>
-                <tr><td>Power management</td><td>Switching ripple</td><td>Separate boost converter current loop from the analog front end and filter sensitive rails.</td></tr>
+                <tr>
+                  <td>Schematic and Layout</td>
+                  <td>Show circuit implementation for potentiostat, TIA, ADC, DAC, peripheral circuits, and PCB layout.</td>
+                  <td>Image placeholders are reserved for later upload.</td>
+                </tr>
+                <tr>
+                  <td>TIA Performance</td>
+                  <td>Compare OPA380 and LMP7721 readout behavior, noise, linearity, gain, and stability.</td>
+                  <td>Test-data placeholders are reserved.</td>
+                </tr>
+                <tr>
+                  <td>ADC Performance</td>
+                  <td>Compare ADS1262 and MSP430F6736A SD24B conversion noise, offset, stability, and usable resolution.</td>
+                  <td>Test-data placeholders are reserved.</td>
+                </tr>
+                <tr>
+                  <td>Signal Analysis</td>
+                  <td>Analyze H2 sensor CA response, DPV response, EIS response, and hydrogen concentration calibration.</td>
+                  <td>Test-data placeholders are reserved.</td>
+                </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        <div id="performance" class="tab-content">
-          <h1>TIA / ADC Performance</h1>
-          <p>
-            The readout performance is evaluated from both the analog and digital sides.
-            The TIA determines current-to-voltage gain, noise floor, bandwidth, and stability,
-            while the ADC determines quantization resolution, effective noise, sampling rate,
-            and long-term readout stability.
+        <div id="schematic-layout" class="tab-content">
+          <h1>Schematic and Layout</h1>
+          <p class="lead">
+            This section documents the circuit-level implementation. Each block contains a reserved figure area where schematic screenshots,
+            PCB captures, or measurement screenshots can be inserted later.
           </p>
 
-          <div class="grid-3">
-            <div class="metric"><span class="metric-value">10 MΩ</span><span class="metric-label">Example TIA feedback resistance</span></div>
-            <div class="metric"><span class="metric-value">10 mV / nA</span><span class="metric-label">Nominal current-to-voltage gain</span></div>
-            <div class="metric"><span class="metric-value">24-bit</span><span class="metric-label">ADC target resolution class</span></div>
-          </div>
-
-          <div class="grid-2">
-            <div class="figure-card">
-              <div class="figure-title">TIA transfer curve</div>
-              <svg class="diagram" viewBox="0 0 520 320" role="img" aria-label="TIA current to voltage transfer curve">
-                <line x1="60" y1="260" x2="470" y2="260" stroke="#0f172a" stroke-width="2" />
-                <line x1="60" y1="260" x2="60" y2="40" stroke="#0f172a" stroke-width="2" />
-                <polyline points="80,230 130,210 180,190 230,168 280,145 330,124 380,102 430,80" fill="none" stroke="#2563eb" stroke-width="4" />
-                <text x="265" y="300" text-anchor="middle" font-size="14" fill="#334155">Input Current</text>
-                <text x="20" y="155" transform="rotate(-90 20 155)" text-anchor="middle" font-size="14" fill="#334155">TIA Output Voltage</text>
-                <text x="340" y="70" font-size="13" fill="#2563eb" font-weight="bold">Linear I-to-V conversion</text>
-              </svg>
-              <div class="figure-caption">Replace with measured calibration data, such as SMU current input versus TIA output voltage.</div>
-            </div>
-            <div class="figure-card">
-              <div class="figure-title">ADC noise / stability</div>
-              <svg class="diagram" viewBox="0 0 520 320" role="img" aria-label="ADC noise stability plot">
-                <line x1="60" y1="260" x2="470" y2="260" stroke="#0f172a" stroke-width="2" />
-                <line x1="60" y1="260" x2="60" y2="40" stroke="#0f172a" stroke-width="2" />
-                <polyline points="70,155 95,151 120,160 145,149 170,156 195,153 220,159 245,150 270,154 295,157 320,151 345,155 370,153 395,158 420,152 445,156" fill="none" stroke="#16a34a" stroke-width="3" />
-                <line x1="70" y1="155" x2="450" y2="155" stroke="#64748b" stroke-dasharray="6 5" />
-                <text x="265" y="300" text-anchor="middle" font-size="14" fill="#334155">Time / Sample Index</text>
-                <text x="20" y="155" transform="rotate(-90 20 155)" text-anchor="middle" font-size="14" fill="#334155">ADC Code / Voltage</text>
-                <text x="320" y="130" font-size="13" fill="#16a34a" font-weight="bold">Baseline noise</text>
-              </svg>
-              <div class="figure-caption">Replace with zero-input, short-input, or fixed-voltage ADC noise data.</div>
-            </div>
-          </div>
-
-          <h2>Analysis Points</h2>
-          <ul>
-            <li><strong>Linearity:</strong> compare measured output voltage with the expected value from the feedback resistor.</li>
-            <li><strong>Noise floor:</strong> evaluate the RMS noise and peak-to-peak noise under shorted-input or fixed-current conditions.</li>
-            <li><strong>Stability:</strong> check whether the TIA oscillates with different current sources, cable lengths, and input capacitances.</li>
-            <li><strong>ADC effective resolution:</strong> convert ADC code noise into input-referred voltage noise and then into equivalent input current noise.</li>
-            <li><strong>Calibration:</strong> record gain error and offset error separately so the PC software can apply both slope and vertical-shift correction.</li>
-          </ul>
-        </div>
-
-        <div id="sensor-signal" class="tab-content">
-          <h1>Electrochemical Sensor Output Signal</h1>
-          <p>
-            Electrochemical sensors produce current signals related to the applied potential,
-            analyte concentration, electrode reaction, electrolyte condition, and environmental
-            factors. The output can appear as a steady-state current, transient response,
-            voltammetric peak, or pulse-modulated waveform depending on the test method.
-          </p>
-
-          <div class="grid-2">
-            <div class="figure-card">
-              <div class="figure-title">Chronoamperometry-style current response</div>
-              <svg class="diagram" viewBox="0 0 520 320" role="img" aria-label="Electrochemical transient current response">
-                <line x1="60" y1="260" x2="470" y2="260" stroke="#0f172a" stroke-width="2" />
-                <line x1="60" y1="260" x2="60" y2="40" stroke="#0f172a" stroke-width="2" />
-                <polyline points="70,230 90,80 115,95 145,118 180,140 220,158 260,173 305,187 350,198 395,207 445,216" fill="none" stroke="#ea580c" stroke-width="4" />
-                <text x="265" y="300" text-anchor="middle" font-size="14" fill="#334155">Time</text>
-                <text x="20" y="155" transform="rotate(-90 20 155)" text-anchor="middle" font-size="14" fill="#334155">Sensor Current</text>
-                <text x="165" y="88" font-size="13" fill="#ea580c" font-weight="bold">Step response + decay</text>
-              </svg>
-              <div class="figure-caption">Use this section for CA response under fixed bias, concentration steps, or gas exposure.</div>
-            </div>
-            <div class="figure-card">
-              <div class="figure-title">Voltammetry-style peak signal</div>
-              <svg class="diagram" viewBox="0 0 520 320" role="img" aria-label="Electrochemical voltammetry peak signal">
-                <line x1="60" y1="260" x2="470" y2="260" stroke="#0f172a" stroke-width="2" />
-                <line x1="60" y1="260" x2="60" y2="40" stroke="#0f172a" stroke-width="2" />
-                <path d="M70 230 C120 225,150 210,185 170 C220 110,250 70,290 116 C335 165,380 198,450 220" fill="none" stroke="#7c3aed" stroke-width="4" />
-                <text x="265" y="300" text-anchor="middle" font-size="14" fill="#334155">Potential</text>
-                <text x="20" y="155" transform="rotate(-90 20 155)" text-anchor="middle" font-size="14" fill="#334155">Current</text>
-                <text x="285" y="90" font-size="13" fill="#7c3aed" font-weight="bold">Redox peak</text>
-              </svg>
-              <div class="figure-caption">Use this section for CV, LSV, DPV, or SWV curves.</div>
-            </div>
-          </div>
-
-          <h2>Signal Interpretation</h2>
-          <ul>
-            <li><strong>Baseline current:</strong> indicates background reaction, leakage, and electrode/electrolyte condition.</li>
-            <li><strong>Response amplitude:</strong> can be converted to analyte concentration after calibration.</li>
-            <li><strong>Response time:</strong> reflects diffusion, reaction kinetics, sensor geometry, and readout filtering.</li>
-            <li><strong>Peak position:</strong> helps identify the electrochemical reaction potential in voltammetry measurements.</li>
-            <li><strong>Noise and drift:</strong> should be separated from true chemical response through blank tests and repeated measurements.</li>
-          </ul>
-        </div>
-
-        <div id="system-response" class="tab-content">
-          <h1>System Response to Electrochemical Sensor Signals</h1>
-          <p>
-            The complete system response is evaluated by applying controlled electrochemical
-            signals and observing the chain from sensor current to TIA output, ADC data,
-            firmware logging, and PC visualization. This verifies not only the analog circuit
-            but also the end-to-end data path.
-          </p>
-
-          <div class="figure-card">
-            <div class="figure-title">End-to-end response comparison</div>
-            <svg class="diagram" viewBox="0 0 760 360" role="img" aria-label="System response comparison plot">
-              <line x1="70" y1="300" x2="700" y2="300" stroke="#0f172a" stroke-width="2" />
-              <line x1="70" y1="300" x2="70" y2="45" stroke="#0f172a" stroke-width="2" />
-              <polyline points="85,260 130,260 131,130 180,130 181,220 235,220 236,95 300,95 301,190 365,190 366,150 430,150 431,235 500,235 501,115 580,115 581,210 670,210" fill="none" stroke="#ea580c" stroke-width="4" />
-              <polyline points="85,266 130,264 140,145 180,135 194,213 235,218 250,112 300,100 316,178 365,188 382,156 430,152 447,222 500,232 520,130 580,120 600,198 670,207" fill="none" stroke="#2563eb" stroke-width="4" opacity="0.85" />
-              <text x="385" y="340" text-anchor="middle" font-size="14" fill="#334155">Time</text>
-              <text x="24" y="180" transform="rotate(-90 24 180)" text-anchor="middle" font-size="14" fill="#334155">Normalized Signal</text>
-              <rect x="500" y="55" width="150" height="58" rx="8" fill="#ffffff" stroke="#cbd5e1" />
-              <line x1="515" y1="75" x2="545" y2="75" stroke="#ea580c" stroke-width="4" />
-              <text x="555" y="80" font-size="13" fill="#334155">Expected input</text>
-              <line x1="515" y1="95" x2="545" y2="95" stroke="#2563eb" stroke-width="4" />
-              <text x="555" y="100" font-size="13" fill="#334155">Measured output</text>
-            </svg>
-            <div class="figure-caption">Replace with measured sensor input/current standard versus system ADC output comparison.</div>
-          </div>
-
-          <h2>End-to-End Analysis</h2>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr><th>Evaluation Item</th><th>What to Measure</th><th>Why It Matters</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Gain accuracy</td><td>Known current input compared with reconstructed current from ADC data</td><td>Verifies TIA resistor value, ADC scale, and software conversion.</td></tr>
-                <tr><td>Offset</td><td>Output at zero current or blank solution</td><td>Determines baseline subtraction and calibration requirements.</td></tr>
-                <tr><td>Response time</td><td>Delay from input change to displayed/logged response</td><td>Combines analog bandwidth, ADC data rate, firmware buffer, and GUI update rate.</td></tr>
-                <tr><td>Noise robustness</td><td>RMS noise before and after digital averaging/filtering</td><td>Shows the tradeoff between sensitivity and temporal resolution.</td></tr>
-                <tr><td>Repeatability</td><td>Repeated trials under the same condition</td><td>Separates circuit repeatability from sensor-to-sensor variation.</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="success-note">
-            A strong portfolio result is to show the same event in three layers: raw TIA voltage, converted ADC current, and final PC software plot. This demonstrates that the whole system works consistently.
-          </div>
-        </div>
-
-        <div id="potentiostat" class="tab-content">
-          <h1>Potentiostat</h1>
-          <p>
-            The potentiostat controls the electrochemical cell and maintains the desired
-            voltage relationship between the working, reference, and counter electrodes.
-            It enables controlled electrochemical testing such as fixed-potential amperometry,
-            cyclic voltammetry, linear sweep voltammetry, and pulse voltammetry.
-          </p>
-
-          <ul>
-            <li>Controls WE–RE potential through closed-loop counter-electrode drive.</li>
-            <li>Uses the DAC-generated bias as the programmable electrochemical setpoint.</li>
-            <li>Provides the operating condition under which the sensor current is generated.</li>
-          </ul>
-
-          <div class="section-note">
-            The reference electrode path should be treated as a high-impedance sensing node,
-            while the counter electrode driver must provide enough output range and current
-            capability to maintain the target bias.
-          </div>
-        </div>
-
-        <div id="dac" class="tab-content">
-          <h1>DAC — DAC80502</h1>
-          <p>
-            The <strong>DAC80502</strong> generates programmable bias voltages for the potentiostat.
-            This allows the electrochemical operating point to be changed by firmware or PC software
-            instead of fixed resistor dividers.
-          </p>
-
-          <h2>Role in the System</h2>
-          <ul>
-            <li>Provides programmable potential setpoints for electrochemical tests.</li>
-            <li>Supports voltage steps, sweeps, and pulse-like bias profiles.</li>
-            <li>Improves repeatability by controlling bias digitally.</li>
-          </ul>
-
-          <h2>Design Considerations</h2>
-          <ul>
-            <li>DAC reference stability affects absolute bias accuracy.</li>
-            <li>Output filtering can reduce DAC update glitches and digital feedthrough.</li>
-            <li>Firmware should define clear conversion between requested voltage and DAC code.</li>
-          </ul>
-        </div>
-
-        <div id="tia-opa380" class="tab-content">
-          <h1>Transimpedance Amplifier — OPA380</h1>
-          <p>
-            The transimpedance amplifier converts sensor current into a measurable voltage.
-            With a 10 MΩ feedback resistor, the nominal conversion gain is 10 mV/nA.
-          </p>
-
-          <div class="grid-2">
-            <div class="card">
-              <h3>Gain Relationship</h3>
-              <p><strong>V<sub>out</sub> = V<sub>ref</sub> − I<sub>sensor</sub> × R<sub>F</sub></strong></p>
-              <p class="small">The sign depends on sensor current direction and the chosen TIA reference voltage.</p>
+          <h2 id="schematic-potentiostat">Potentiostat</h2>
+          <div class="grid two">
+            <div>
+              <div class="placeholder"><div><strong>Upload Area: Potentiostat Schematic</strong>Place the WE / RE / CE control schematic here.</div></div>
             </div>
             <div class="card">
-              <h3>Stability Considerations</h3>
-              <p>Input capacitance from the electrode, cable, SMU, or protection network can reduce phase margin. Feedback capacitance and layout parasitics must be considered together.</p>
-            </div>
-          </div>
-
-          <h2>Performance Factors</h2>
-          <ul>
-            <li>Feedback resistor tolerance and temperature coefficient determine gain accuracy.</li>
-            <li>Op-amp input bias current and current noise affect low-current resolution.</li>
-            <li>Feedback capacitor controls bandwidth and stability.</li>
-            <li>PCB leakage and contamination can become comparable to nanoamp-level signals.</li>
-          </ul>
-        </div>
-
-        <div id="adc-ads1262" class="tab-content">
-          <h1>ADC — ADS1262</h1>
-          <p>
-            The <strong>ADS1262</strong> is used as an external high-resolution ADC option
-            for digitizing the analog output of the readout chain. It is suitable when the system
-            requires flexible data rate, low-noise conversion, and precise voltage measurement.
-          </p>
-
-          <ul>
-            <li>High-resolution external ADC path for low-level signal digitization.</li>
-            <li>Configurable data rate and digital filtering for noise-bandwidth tradeoff.</li>
-            <li>SPI communication with the MCU for register configuration and data readout.</li>
-          </ul>
-
-          <div class="section-note">
-            For low-current measurement, ADC voltage noise can be converted into equivalent input current noise by dividing by the TIA feedback resistance.
-          </div>
-        </div>
-
-        <div id="adc-msp430" class="tab-content">
-          <h1>ADC — MSP430F6736A</h1>
-          <p>
-            The <strong>MSP430F6736A</strong> provides an alternative ADC path using the MCU’s
-            integrated 24-bit ADC. This option reduces external component count and simplifies
-            the system architecture when the integrated ADC performance is sufficient.
-          </p>
-
-          <ul>
-            <li>Integrated MCU + ADC solution.</li>
-            <li>Lower component count and smaller board area.</li>
-            <li>Useful for compact or portable sensor readout versions.</li>
-          </ul>
-        </div>
-
-        <div id="peripherals" class="tab-content">
-          <h1>Peripheral Circuits</h1>
-          <p>
-            In addition to the analog readout chain, the system includes peripheral circuits
-            for display, storage, environmental monitoring, and power management.
-          </p>
-
-          <h2>Peripheral Overview</h2>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr><th>Block</th><th>Device</th><th>Function</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Display</td><td>SSD1306</td><td>Local display of measurement information and system status.</td></tr>
-                <tr><td>Storage</td><td>microSD card</td><td>Data logging and storage of measurement results.</td></tr>
-                <tr><td>Environment Sensor</td><td>BME280</td><td>Monitoring temperature, humidity, and pressure.</td></tr>
-                <tr><td>Power Management</td><td>BQ24074</td><td>Battery charging and power-path management.</td></tr>
-                <tr><td>Boost Converter</td><td>TPS61022</td><td>Voltage boost stage for required system rails.</td></tr>
-                <tr><td>LDO Regulator</td><td>TPS7A4700</td><td>Low-noise voltage regulation for sensitive analog circuits.</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div id="github" class="tab-content">
-          <h1>GitHub Code Upload</h1>
-          <p>
-            The firmware and analysis scripts can be published on GitHub to make the project
-            easier to review, reproduce, and maintain. The repository should separate embedded
-            firmware, PC software, data examples, and documentation.
-          </p>
-
-          <h2>Recommended Repository Structure</h2>
-          <div class="code-block">electrochemical-sensor-readout/
-├── firmware/
-│   ├── mcu_main/
-│   ├── drivers/
-│   │   ├── dac80502/
-│   │   ├── ads1262/
-│   │   ├── bme280/
-│   │   ├── ssd1306/
-│   │   └── sd_card/
-│   └── README.md
-├── pc_software/
-│   ├── gui/
-│   ├── data_processing/
-│   └── README.md
-├── hardware/
-│   ├── schematic_exports/
-│   ├── pcb_images/
-│   └── bom/
-├── measurement_data/
-│   ├── tia_adc_calibration/
-│   ├── electrochemical_tests/
-│   └── examples/
-└── README.md</div>
-
-          <h2>README Content</h2>
-          <ul>
-            <li>Project goal and system block diagram.</li>
-            <li>Hardware version, major ICs, and measurement range.</li>
-            <li>Firmware build environment and upload instructions.</li>
-            <li>Communication protocol between MCU and PC software.</li>
-            <li>Example data files and plotting instructions.</li>
-            <li>Known limitations and future work.</li>
-          </ul>
-
-          <div class="section-note">
-            Add your actual repository URL here after upload:
-            <br />
-            <a class="button-link" href="#">GitHub Repository</a>
-          </div>
-        </div>
-
-        <div id="pc-software" class="tab-content">
-          <h1>Upper-Computer Software</h1>
-          <p>
-            The PC software provides real-time visualization, test configuration, data logging,
-            and calibration for electrochemical measurements. It connects the hardware platform
-            to user-facing experiments such as CV, LSV, CA, DPV, and SWV.
-          </p>
-
-          <div class="grid-2">
-            <div class="figure-card">
-              <div class="figure-title">PC software interface</div>
-              <div class="placeholder-box">
-                Upload GUI screenshot here.<br />
-                Show real-time plot, serial connection, test settings, calibration controls, and data export.
-              </div>
-              <div class="figure-caption">Recommended file: <strong>assets/pc_software_gui.png</strong></div>
-            </div>
-            <div class="card">
-              <h3>Main Functions</h3>
+              <h3>Analysis</h3>
+              <p>
+                The potentiostat maintains the required electrochemical bias between the working and reference electrodes while driving the counter electrode.
+                The key design points are loop stability, reference-electrode input impedance, output compliance range, and isolation between bias generation and current readout.
+              </p>
               <ul>
-                <li>Serial connection and device status monitoring.</li>
-                <li>Real-time plotting of current, voltage, and environmental data.</li>
-                <li>CV / LSV / CA / DPV / SWV test control.</li>
-                <li>Gain and offset calibration for ADC/TIA error correction.</li>
-                <li>Data export for later analysis.</li>
+                <li>Check WE-RE regulation error under different sensor currents.</li>
+                <li>Verify CE output swing does not saturate during high-current response.</li>
+                <li>Evaluate transient response when DAC bias steps are applied.</li>
               </ul>
             </div>
           </div>
 
-          <h2>Software Function Analysis</h2>
+          <h2 id="schematic-tia">TIA</h2>
+          <div class="grid two">
+            <div class="placeholder"><div><strong>Upload Area: TIA Schematic</strong>Place OPA380 / LMP7721 TIA schematic screenshots here.</div></div>
+            <div class="card">
+              <h3>Analysis</h3>
+              <p>
+                The TIA converts electrochemical sensor current to voltage. With high-value feedback resistance, leakage current, parasitic capacitance,
+                feedback compensation, guard design, and input protection become performance-limiting factors.
+              </p>
+              <ul>
+                <li>OPA380 path: precision current-to-voltage conversion and stable low-current readout.</li>
+                <li>LMP7721 path: ultra-low input bias current for very high impedance / low leakage measurements.</li>
+                <li>Recommended test data: input current sweep, output voltage linearity, noise histogram, and step response.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h2 id="schematic-adc">ADC</h2>
+          <div class="grid two">
+            <div class="placeholder"><div><strong>Upload Area: ADC Schematic</strong>Place ADS1262 and MSP430F6736A SD24B input-path schematics here.</div></div>
+            <div class="card">
+              <h3>Analysis</h3>
+              <p>
+                The ADC stage digitizes TIA and electrode voltage signals. Important metrics include input-referred noise, offset drift, common-mode range,
+                sampling rate, digital filter setting, and synchronization with DAC updates.
+              </p>
+              <ul>
+                <li>ADS1262: external precision ADC path for high-resolution measurements.</li>
+                <li>MSP430F6736A SD24B: integrated 24-bit sigma-delta ADC path for compact system implementation.</li>
+                <li>Recommended test data: shorted-input noise, DC stability, raw-code distribution, and effective resolution.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h2 id="schematic-dac">DAC</h2>
+          <div class="grid two">
+            <div class="placeholder"><div><strong>Upload Area: DAC Schematic</strong>Place DAC80502 schematic and bias-output measurement data here.</div></div>
+            <div class="card">
+              <h3>Analysis</h3>
+              <p>
+                The DAC provides programmable electrochemical bias. Since the DAC output directly affects the potentiostat setpoint,
+                bias resolution, reference stability, output noise, settling behavior, and MCU command timing should be characterized.
+              </p>
+              <ul>
+                <li>Verify DAC output accuracy across the intended bias range.</li>
+                <li>Measure settling after step changes used in CA, DPV, and SWV.</li>
+                <li>Check whether DAC noise contributes to current noise through the electrochemical cell.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h2 id="schematic-peripheral">Peripheral Circuits</h2>
+          <div class="grid two">
+            <div class="placeholder"><div><strong>Upload Area: Peripheral Circuit Schematics</strong>Place power, display, microSD, BME280, charger, and regulator schematics here.</div></div>
+            <div class="card">
+              <h3>Analysis</h3>
+              <p>
+                Peripheral circuits support display, storage, environmental monitoring, and power management. These blocks should be evaluated not only by function,
+                but also by their influence on analog noise and grounding.
+              </p>
+              <ul>
+                <li>SSD1306: local status display.</li>
+                <li>microSD: measurement data storage.</li>
+                <li>BME280: temperature, humidity, and pressure monitoring.</li>
+                <li>BQ24074 / TPS61022 / TPS7A4700: battery charging, boost conversion, and low-noise regulation.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h2 id="schematic-layout-section">Layout</h2>
+          <div class="grid two">
+            <div class="placeholder"><div><strong>Upload Area: PCB Layout</strong>Place top layer, bottom layer, analog front-end close-up, and full PCB renders here.</div></div>
+            <div class="card">
+              <h3>Layout Analysis</h3>
+              <p>
+                The PCB layout should emphasize low leakage, low noise, and separation between sensitive analog nodes and digital switching circuits.
+                The TIA input node and feedback network are especially sensitive and should be kept short, clean, guarded when possible, and away from SPI/UART/clock traces.
+              </p>
+              <ul>
+                <li>Separate analog and digital return paths with controlled connection strategy.</li>
+                <li>Place ADC reference and decoupling capacitors close to the ADC pins.</li>
+                <li>Keep high-impedance TIA input traces short and protected from contamination/leakage.</li>
+                <li>Route DAC and potentiostat signals away from noisy display, SD card, and wireless sections.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="tia-performance" class="tab-content">
+          <h1>TIA Performance</h1>
+          <p class="lead">
+            This section compares two TIA configurations: OPA380 and LMP7721. The reserved areas are prepared for measured curves, oscilloscope screenshots,
+            noise plots, and linearity data.
+          </p>
+
+          <h2 id="tia-opa380">OPA380 TIA</h2>
+          <div class="grid two">
+            <div class="placeholder"><div><strong>Upload Area: OPA380 TIA Test Data</strong>Suggested figures: current sweep, Vout linearity, noise vs time, step response.</div></div>
+            <div class="card">
+              <h3>Analysis Focus</h3>
+              <ul>
+                <li>Current-to-voltage gain accuracy based on feedback resistor value.</li>
+                <li>Output noise under shorted input and electrochemical sensor load.</li>
+                <li>Stability with sensor capacitance and feedback compensation capacitor.</li>
+                <li>Dynamic response during CA or pulse-voltammetry bias transitions.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h2 id="tia-lmp7721">LMP7721 TIA</h2>
+          <div class="grid two">
+            <div class="placeholder"><div><strong>Upload Area: LMP7721 TIA Test Data</strong>Suggested figures: leakage test, long-term drift, low-current response, noise comparison.</div></div>
+            <div class="card">
+              <h3>Analysis Focus</h3>
+              <ul>
+                <li>Ultra-low input bias current benefit for high-feedback-resistance TIA operation.</li>
+                <li>Leakage limitation from PCB surface, connectors, and sensor interface.</li>
+                <li>Low-frequency drift and 1/f noise behavior in long-duration CA tests.</li>
+                <li>Comparison against OPA380 under the same feedback resistor and sensor condition.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h2 id="tia-metrics">Recommended TIA Metrics</h2>
+          <div class="metric-list">
+            <div class="metric"><strong>Gain Error</strong>Compare measured Vout / Iin with ideal Rf.</div>
+            <div class="metric"><strong>Noise Floor</strong>Report RMS current noise and peak-to-peak noise after bandwidth definition.</div>
+            <div class="metric"><strong>Linearity</strong>Fit current sweep and report R² / residual error.</div>
+            <div class="metric"><strong>Stability</strong>Show step response and ringing/settling behavior with realistic sensor capacitance.</div>
+          </div>
+        </div>
+
+        <div id="adc-performance" class="tab-content">
+          <h1>ADC Performance</h1>
+          <p class="lead">
+            This section documents the digitization performance of ADS1262 and the MSP430F6736A built-in SD24B ADC.
+          </p>
+
+          <h2 id="adc-ads1262-section">ADS1262</h2>
+          <div class="grid two">
+            <div class="placeholder"><div><strong>Upload Area: ADS1262 Performance Data</strong>Suggested figures: shorted-input noise, raw-code histogram, DC input sweep, ENOB table.</div></div>
+            <div class="card">
+              <h3>Analysis</h3>
+              <p>
+                ADS1262 is the external precision ADC option. The performance analysis should focus on low-noise digitization of the TIA output,
+                reference stability, input filtering, and data-rate/noise tradeoff.
+              </p>
+              <ul>
+                <li>Measure shorted-input RMS noise at different sampling rates.</li>
+                <li>Measure DC stability and drift during long-duration CA acquisition.</li>
+                <li>Compare ADC code distribution before and after digital filtering.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h2 id="adc-sd24b-section">MSP430F6736A SD24B</h2>
+          <div class="grid two">
+            <div class="placeholder"><div><strong>Upload Area: SD24B Performance Data</strong>Suggested figures: SD24B offset calibration, noise over time, raw-code histogram, channel comparison.</div></div>
+            <div class="card">
+              <h3>Analysis</h3>
+              <p>
+                The SD24B path provides an integrated 24-bit ADC solution. It reduces external component count and simplifies the system, but requires careful
+                offset calibration, reference handling, and firmware-side data formatting.
+              </p>
+              <ul>
+                <li>Use zero-offset calibration data to show improvement after shorted-input calibration.</li>
+                <li>Compare raw and calibrated current readout stability.</li>
+                <li>Evaluate whether integrated ADC noise is sufficient for nA-level sensor signals.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h2 id="adc-comparison">ADC Comparison Table</h2>
           <div class="table-wrap">
             <table>
               <thead>
-                <tr><th>Function</th><th>Input</th><th>Output</th><th>Analysis Value</th></tr>
+                <tr>
+                  <th>ADC Path</th>
+                  <th>Strength</th>
+                  <th>Limitation to Check</th>
+                  <th>Data to Upload Later</th>
+                </tr>
               </thead>
               <tbody>
-                <tr><td>Connection management</td><td>COM port and baud rate</td><td>Device handshake and status</td><td>Confirms that the data path is active before measurement.</td></tr>
-                <tr><td>Real-time plotting</td><td>ADC data stream</td><td>Voltage/current curves</td><td>Allows immediate observation of sensor response and noise.</td></tr>
-                <tr><td>Calibration</td><td>Gain factor and offset correction</td><td>Corrected current value</td><td>Compensates ADC gain error, fixed offset, and TIA conversion error.</td></tr>
-                <tr><td>Test control</td><td>Bias, scan rate, pulse parameters, duration</td><td>Command sequence to MCU</td><td>Defines reproducible electrochemical protocols.</td></tr>
-                <tr><td>Data export</td><td>Timestamped measurement data</td><td>CSV or text file</td><td>Supports external analysis, publication figures, and reproducibility.</td></tr>
+                <tr>
+                  <td>ADS1262</td>
+                  <td>External precision ADC, flexible filtering, high-resolution conversion.</td>
+                  <td>Board area, SPI routing, reference layout, configuration complexity.</td>
+                  <td>Noise, ENOB, INL/DNL or DC sweep, reference drift.</td>
+                </tr>
+                <tr>
+                  <td>MSP430F6736A SD24B</td>
+                  <td>Integrated MCU + ADC path, lower part count, simpler system architecture.</td>
+                  <td>Integrated ADC noise, offset drift, channel calibration, firmware scaling.</td>
+                  <td>Offset calibration, noise histogram, long-term current stability.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="signal-analysis" class="tab-content">
+          <h1>Signal Analysis</h1>
+          <p class="lead">
+            This section is reserved for electrochemical sensor output data and system-level response analysis.
+            Each subsection includes a figure/data placeholder and an analysis template.
+          </p>
+
+          <h2 id="signal-ca">H2 Sensor CA Response</h2>
+          <div class="grid two">
+            <div class="placeholder"><div><strong>Upload Area: H2 Sensor CA Response</strong>Place current-vs-time response curves under fixed bias here.</div></div>
+            <div class="card">
+              <h3>Analysis</h3>
+              <p>
+                CA response should show the sensor current transient and steady-state behavior after exposure to hydrogen.
+                Key parameters include response time, recovery time, baseline drift, steady-state current, and signal-to-noise ratio.
+              </p>
+            </div>
+          </div>
+
+          <h2 id="signal-dpv">DPV Response</h2>
+          <div class="grid two">
+            <div class="placeholder"><div><strong>Upload Area: DPV Response</strong>Place DPV current-vs-potential curves and peak-current analysis here.</div></div>
+            <div class="card">
+              <h3>Analysis</h3>
+              <p>
+                DPV data can be used to identify peak position, peak current, background current, and sensitivity to hydrogen-related redox processes.
+                The analysis should compare peak shift and peak amplitude under different gas concentrations or bias conditions.
+              </p>
+            </div>
+          </div>
+
+          <h2 id="signal-eis">EIS Analysis</h2>
+          <div class="grid two">
+            <div class="placeholder"><div><strong>Upload Area: EIS Analysis</strong>Place Nyquist plots, Bode plots, or time-domain perturbation response here.</div></div>
+            <div class="card">
+              <h3>Analysis</h3>
+              <p>
+                EIS analysis should describe charge-transfer resistance, double-layer capacitance, diffusion behavior, and interface changes caused by hydrogen exposure.
+                If the present firmware uses square perturbation as an EIS placeholder, this section can document the current limitation and planned sinusoidal/frequency-sweep implementation.
+              </p>
+            </div>
+          </div>
+
+          <h2 id="signal-h2-concentration">Hydrogen Concentration Test</h2>
+          <div class="grid two">
+            <div class="placeholder"><div><strong>Upload Area: Hydrogen Concentration Calibration</strong>Place concentration-vs-current calibration curves and repeatability data here.</div></div>
+            <div class="card">
+              <h3>Analysis</h3>
+              <p>
+                Hydrogen concentration testing should establish the relationship between gas concentration and sensor output.
+                Recommended analysis includes calibration sensitivity, linear range, limit of detection, hysteresis, response/recovery repeatability, and environmental influence.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div id="pc-software" class="tab-content">
+          <h1>PC Software</h1>
+          <p class="lead">
+            The PC software is a Python / PySide6 electrochemical workstation GUI. It communicates with the embedded system through UART,
+            parses binary frames or legacy CSV text, displays real-time plots, and records measurement data to CSV.
+          </p>
+
+          <h2 id="software-architecture">Software Architecture</h2>
+          <div class="grid two">
+            <div class="card">
+              <h3>Communication Layer</h3>
+              <ul>
+                <li>UART connection with selectable COM port and baud rate.</li>
+                <li>Binary frame protocol using AA 55 header and Modbus CRC16.</li>
+                <li>Backward-compatible parsing of firmware CSV/text output.</li>
+                <li>Command set for DAC control, ADC read, zero offset, CA, CV, EIS, DPV, SWV, stop, ACK, and error handling.</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>GUI Layer</h3>
+              <ul>
+                <li>Manual, CA, CV/LSV, DPV/SWV, EIS, and Raw UART tabs.</li>
+                <li>Real-time pyqtgraph plotting for voltage, current, and current-vs-potential curves.</li>
+                <li>CSV logging with raw current, gain-corrected current, TIA voltage, ADC raw code, and environmental data.</li>
+                <li>Independent data buffers for different test modes to prevent plot contamination between measurements.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h2 id="software-functions">Implemented Functions Observed from the Uploaded Python File</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Function</th>
+                  <th>Implementation Summary</th>
+                  <th>Portfolio Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>CA</td>
+                  <td>Supports fixed potential, duration, sampling interval, and average points.</td>
+                  <td>Used for H2 sensor current-vs-time response and long-term stability measurement.</td>
+                </tr>
+                <tr>
+                  <td>CV / LSV</td>
+                  <td>Supports start/end voltage, step size, interval, half-cycles, pause-by-stop, and plot clearing.</td>
+                  <td>Used for electrochemical characterization and current-vs-potential response.</td>
+                </tr>
+                <tr>
+                  <td>DPV / SWV</td>
+                  <td>Uses pulse start/end/step/amplitude/interval settings and displays time-domain and I-E plots.</td>
+                  <td>Used for pulse-voltammetry hydrogen sensor signal extraction.</td>
+                </tr>
+                <tr>
+                  <td>EIS</td>
+                  <td>Current implementation is a square-perturbation placeholder.</td>
+                  <td>Can be presented as an initial EIS-style perturbation module with planned frequency-sweep upgrade.</td>
+                </tr>
+                <tr>
+                  <td>Calibration</td>
+                  <td>Includes SD24B zero-offset command, PC-side gain factor, and additive current offset correction.</td>
+                  <td>Useful for explaining measurement correction and ADC/TIA calibration workflow.</td>
+                </tr>
+                <tr>
+                  <td>Environment Monitor</td>
+                  <td>Polls temperature, humidity, and pressure independently when no active scan is running.</td>
+                  <td>Supports environmental compensation and sensor-condition recording.</td>
+                </tr>
               </tbody>
             </table>
           </div>
 
-          <div class="pill-row">
-            <span class="pill">Real-time plot</span>
-            <span class="pill">Calibration</span>
-            <span class="pill">Data logging</span>
-            <span class="pill">CV / LSV / CA</span>
-            <span class="pill">DPV / SWV</span>
-            <span class="pill">Environment monitor</span>
+          <h2 id="software-improvements">Suggested Software Improvements</h2>
+          <div class="todo">
+            <strong>Recommended next changes for the Python GUI:</strong>
+            <ul>
+              <li>Add an export function for each test mode that saves both raw CSV and processed figures.</li>
+              <li>Add a formal EIS frequency-sweep mode instead of only square perturbation.</li>
+              <li>Add project/session metadata fields: sensor ID, gas concentration, bias condition, operator, and notes.</li>
+              <li>Add automatic calculation panels for CA response time, DPV peak current, baseline drift, and SNR.</li>
+              <li>Add a screenshot/plot export button so figures can be uploaded directly to this webpage.</li>
+              <li>Add configuration save/load so TIA Rf, gain factor, offset, and scan settings are reproducible.</li>
+            </ul>
           </div>
 
-          <div class="section-note">
-            Add the software download link or GitHub release here after upload:
-            <br />
-            <a class="button-link secondary" href="#">Download PC Software</a>
+          <h2 id="software-screenshot">GUI Screenshot / Demo Area</h2>
+          <div class="placeholder"><div><strong>Upload Area: PC Software Screenshot</strong>Place screenshots of the Python GUI, real-time plots, CSV output, and measurement workflow here.</div></div>
+        </div>
+
+        <div id="github-code" class="tab-content">
+          <h1>GitHub Code</h1>
+          <p class="lead">
+            This section organizes the project code into three groups: CC2640R2F firmware, MSP430F6736A firmware, and PC software.
+            The repository links can be added after the code is uploaded to GitHub.
+          </p>
+
+          <h2 id="github-structure">Recommended Repository Structure</h2>
+          <div class="code-tree">electrochemical-sensor-platform/
+├── firmware/
+│   ├── CC2640R2F/
+│   │   ├── potentiostat_control/
+│   │   ├── dac_driver/
+│   │   ├── adc_interface/
+│   │   ├── ble_or_uart_comm/
+│   │   └── README.md
+│   └── MSP430F6736A/
+│       ├── sd24b_adc/
+│       ├── dac_control/
+│       ├── electrochemical_tests/
+│       ├── uart_protocol/
+│       └── README.md
+├── pc_software/
+│   ├── UARTAPP.py
+│   ├── requirements.txt
+│   ├── example_data/
+│   └── README.md
+├── hardware/
+│   ├── schematic/
+│   ├── pcb_layout/
+│   └── test_results/
+└── docs/
+    ├── figures/
+    └── measurement_notes/</div>
+
+          <h2 id="github-cc2640">CC2640R2F Series Code</h2>
+          <div class="grid two">
+            <div class="card">
+              <h3>Content</h3>
+              <ul>
+                <li>Peripheral initialization</li>
+                <li>DAC/ADC communication</li>
+                <li>BLE or UART data transmission</li>
+                <li>Sensor test sequence control</li>
+              </ul>
+            </div>
+            <div class="placeholder small"><div><strong>GitHub Link Placeholder</strong>Add CC2640R2F repository or folder link here.</div></div>
+          </div>
+
+          <h2 id="github-msp430">MSP430F6736A Series Code</h2>
+          <div class="grid two">
+            <div class="card">
+              <h3>Content</h3>
+              <ul>
+                <li>SD24B ADC configuration and zero-offset calibration</li>
+                <li>DAC command handling</li>
+                <li>CA / CV / DPV / SWV / EIS command implementation</li>
+                <li>UART frame protocol and CRC validation</li>
+              </ul>
+            </div>
+            <div class="placeholder small"><div><strong>GitHub Link Placeholder</strong>Add MSP430F6736A repository or folder link here.</div></div>
+          </div>
+
+          <h2 id="github-pc">PC Software Code</h2>
+          <div class="grid two">
+            <div class="card">
+              <h3>Content</h3>
+              <ul>
+                <li>PySide6 GUI</li>
+                <li>pyqtgraph real-time plotting</li>
+                <li>Serial worker thread</li>
+                <li>Binary/CSV protocol parser</li>
+                <li>CSV data logging and calibration display</li>
+              </ul>
+            </div>
+            <div class="placeholder small"><div><strong>GitHub Link Placeholder</strong>Add PC software repository or folder link here.</div></div>
           </div>
         </div>
       </section>
@@ -968,31 +1154,45 @@
 
   <script>
     function clearActiveButtons() {
-      document.querySelectorAll('.tab-button').forEach(function(btn) { btn.classList.remove('active'); });
-      document.querySelectorAll('.submenu-button').forEach(function(btn) { btn.classList.remove('active'); });
+      document.querySelectorAll('.nav-subitem, .tab-button, .submenu-toggle, .submenu-button').forEach(function(btn) {
+        btn.classList.remove('active');
+      });
     }
 
     function clearActiveTabs() {
-      document.querySelectorAll('.tab-content').forEach(function(tab) { tab.classList.remove('active'); });
+      document.querySelectorAll('.tab-content').forEach(function(tab) {
+        tab.classList.remove('active');
+      });
     }
 
-    function showTab(tabId, buttonElement, submenuId) {
+    function scrollToSection(sectionId) {
+      if (!sectionId) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      var section = document.getElementById(sectionId);
+      if (!section) return;
+      setTimeout(function() {
+        var y = section.getBoundingClientRect().top + window.pageYOffset - 18;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }, 60);
+    }
+
+    function showTab(tabId, buttonElement, menuId, sectionId) {
       clearActiveButtons();
       clearActiveTabs();
+
       var target = document.getElementById(tabId);
       if (target) target.classList.add('active');
+
       if (buttonElement) buttonElement.classList.add('active');
-      if (submenuId) {
-        var menu = document.getElementById(submenuId);
-        if (menu) menu.classList.add('open');
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToSection(sectionId);
     }
 
-    function toggleSubmenu(menuId) {
-      var menu = document.getElementById(menuId);
-      if (menu) menu.classList.toggle('open');
-    }
+    window.addEventListener('DOMContentLoaded', function() {
+      var first = document.querySelector('.nav-subitem');
+      if (first) first.classList.add('active');
+    });
   </script>
 </body>
 </html>
