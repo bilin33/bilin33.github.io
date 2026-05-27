@@ -493,12 +493,235 @@
       padding-left: 34px;
     }
 
+
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    .page-layout,
+    .content-area {
+      min-width: 0;
+    }
+
+    .container {
+      max-width: 1180px;
+    }
+
+    .sidebar {
+      width: 270px;
+    }
+
+    .content-area {
+      padding: 28px;
+    }
+
+    .sidebar {
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .board-photo {
+      margin: 24px 0 12px;
+    }
+
+    .system-diagram {
+      display: grid;
+      grid-template-columns: minmax(130px, 1fr) 42px minmax(130px, 1fr) 42px minmax(130px, 1fr) 42px minmax(130px, 1fr);
+      gap: 10px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .system-diagram.second {
+      margin-top: 14px;
+      grid-template-columns: minmax(130px, 1fr) 42px minmax(130px, 1fr) 42px minmax(130px, 1fr) 42px minmax(130px, 1fr);
+    }
+
+    .vertical-note-row {
+      display: grid;
+      grid-template-columns: minmax(130px, 1fr) 42px minmax(130px, 1fr) 42px minmax(130px, 1fr) 42px minmax(130px, 1fr);
+      gap: 10px;
+      align-items: center;
+      margin: 10px 0;
+      min-width: 0;
+    }
+
+    .storage-row {
+      display: grid;
+      grid-template-columns: minmax(130px, 1fr) 42px minmax(130px, 1fr) 42px minmax(130px, 1fr);
+      gap: 10px;
+      align-items: center;
+      margin-top: 14px;
+      min-width: 0;
+    }
+
+    .architecture {
+      overflow-x: visible;
+    }
+
+    .flow,
+    .flow-row {
+      min-width: 0;
+    }
+
+    .diagram-arrow {
+      font-size: 26px;
+      color: var(--blue);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .diagram-arrow.small {
+      font-size: 22px;
+    }
+
+    @media (max-width: 1100px) {
+      .page-layout {
+        gap: 16px;
+      }
+
+      .sidebar {
+        width: 245px;
+      }
+
+      .content-area {
+        padding: 22px;
+      }
+
+      .system-diagram,
+      .system-diagram.second,
+      .vertical-note-row,
+      .storage-row {
+        grid-template-columns: 1fr;
+      }
+
+      .diagram-arrow {
+        transform: rotate(90deg);
+        line-height: 1;
+      }
+
+      .diagram-arrow.no-rotate {
+        transform: none;
+      }
+    }
+
     @media (max-width: 980px) {
       .page-layout { flex-direction: column; }
       .sidebar { width: 100%; position: static; }
       .grid.two, .grid.three, .metric-list { grid-template-columns: 1fr; }
       .content-area { padding: 24px; }
     }
+
+    /* Independent two-column scrolling:
+       The page itself should not jump when users select items in the left navigation.
+       The sidebar and the content panel scroll separately. */
+    body {
+      overflow: hidden;
+    }
+
+    .page-layout {
+      height: calc(100vh - 88px);
+      overflow: hidden;
+      padding: 24px 0;
+    }
+
+    .sidebar {
+      max-height: 100%;
+      overflow-y: auto;
+      align-self: stretch;
+    }
+
+    .content-area {
+      max-height: 100%;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    @media (max-width: 980px) {
+      body {
+        overflow: auto;
+      }
+
+      .page-layout {
+        height: auto;
+        overflow: visible;
+      }
+
+      .sidebar,
+      .content-area {
+        max-height: none;
+        overflow-y: visible;
+      }
+    }
+
+
+    /* v5 navigation/layout fix:
+       keep the whole page fixed; only the sidebar and content panel scroll.
+       This applies to normal desktop/tablet widths so every section behaves like Overall. */
+    @media (min-width: 701px) {
+      html,
+      body {
+        height: 100%;
+        overflow: hidden !important;
+      }
+
+      main.container {
+        height: calc(100vh - 69px);
+      }
+
+      .page-layout {
+        height: 100%;
+        padding: 24px 0 !important;
+        overflow: hidden !important;
+        align-items: stretch !important;
+      }
+
+      .sidebar {
+        height: 100% !important;
+        max-height: none !important;
+        overflow-y: auto !important;
+        position: static !important;
+      }
+
+      .content-area {
+        height: 100% !important;
+        max-height: none !important;
+        overflow-y: auto !important;
+        min-height: 0 !important;
+      }
+    }
+
+    @media (max-width: 700px) {
+      html,
+      body {
+        height: auto;
+        overflow: auto !important;
+      }
+
+      main.container,
+      .page-layout,
+      .sidebar,
+      .content-area {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+      }
+    }
+
+    .nav-group summary {
+      outline: none;
+    }
+
+    .nav-group summary.active-summary {
+      background: var(--blue-soft);
+      border-left: 4px solid var(--blue);
+      padding-left: 16px;
+      color: #1d4ed8;
+      font-weight: 700;
+    }
+
   </style>
 </head>
 <body>
@@ -519,72 +742,73 @@
       <aside class="sidebar">
         <div class="sidebar-title">Contents</div>
 
-        <details class="nav-group" open>
-          <summary onclick="showTab('overall', null, null, null)">Overall</summary>
+        <details class="nav-group" open data-tab="overall">
+          <summary>Overall</summary>
           <div class="nav-sublist">
-            <button class="nav-subitem" type="button" onclick="showTab('overall', this, null, 'overall-architecture')">System Architecture</button>
-            <button class="nav-subitem" type="button" onclick="showTab('overall', this, null, 'overall-hardware')">Hardware Options</button>
-            <button class="nav-subitem" type="button" onclick="showTab('overall', this, null, 'overall-roadmap')">Content Roadmap</button>
+            <button class="nav-subitem active" type="button" data-tab="overall" data-section="overall-architecture">System Architecture</button>
+            <button class="nav-subitem" type="button" data-tab="overall" data-section="overall-hardware">Hardware Options</button>
+            <button class="nav-subitem" type="button" data-tab="overall" data-section="overall-roadmap">Content Roadmap</button>
           </div>
         </details>
 
-        <details class="nav-group">
-          <summary onclick="showTab('schematic-layout', null, null, null)">Schematic and Layout</summary>
+        <details class="nav-group" data-tab="schematic-layout">
+          <summary>Schematic and Layout</summary>
           <div class="nav-sublist">
-            <button class="nav-subitem" type="button" onclick="showTab('schematic-layout', this, null, 'schematic-potentiostat')">Potentiostat</button>
-            <button class="nav-subitem" type="button" onclick="showTab('schematic-layout', this, null, 'schematic-tia')">TIA</button>
-            <button class="nav-subitem" type="button" onclick="showTab('schematic-layout', this, null, 'schematic-adc')">ADC</button>
-            <button class="nav-subitem" type="button" onclick="showTab('schematic-layout', this, null, 'schematic-dac')">DAC</button>
-            <button class="nav-subitem" type="button" onclick="showTab('schematic-layout', this, null, 'schematic-peripheral')">Peripheral Circuits</button>
-            <button class="nav-subitem" type="button" onclick="showTab('schematic-layout', this, null, 'schematic-layout-section')">Layout</button>
+            <button class="nav-subitem" type="button" data-tab="schematic-layout" data-section="schematic-potentiostat">Potentiostat</button>
+            <button class="nav-subitem" type="button" data-tab="schematic-layout" data-section="schematic-tia">TIA</button>
+            <button class="nav-subitem" type="button" data-tab="schematic-layout" data-section="schematic-adc">ADC</button>
+            <button class="nav-subitem" type="button" data-tab="schematic-layout" data-section="schematic-dac">DAC</button>
+            <button class="nav-subitem" type="button" data-tab="schematic-layout" data-section="schematic-peripheral">Peripheral Circuits</button>
+            <button class="nav-subitem" type="button" data-tab="schematic-layout" data-section="schematic-layout-section">Layout</button>
           </div>
         </details>
 
-        <details class="nav-group">
-          <summary onclick="showTab('tia-performance', null, null, null)">TIA Performance</summary>
+        <details class="nav-group" data-tab="tia-performance">
+          <summary>TIA Performance</summary>
           <div class="nav-sublist">
-            <button class="nav-subitem" type="button" onclick="showTab('tia-performance', this, null, 'tia-opa380')">OPA380 TIA</button>
-            <button class="nav-subitem" type="button" onclick="showTab('tia-performance', this, null, 'tia-lmp7721')">LMP7721 TIA</button>
-            <button class="nav-subitem" type="button" onclick="showTab('tia-performance', this, null, 'tia-metrics')">Recommended Metrics</button>
+            <button class="nav-subitem" type="button" data-tab="tia-performance" data-section="tia-opa380">OPA380 TIA</button>
+            <button class="nav-subitem" type="button" data-tab="tia-performance" data-section="tia-lmp7721">LMP7721 TIA</button>
+            <button class="nav-subitem" type="button" data-tab="tia-performance" data-section="tia-metrics">Recommended Metrics</button>
           </div>
         </details>
 
-        <details class="nav-group">
-          <summary onclick="showTab('adc-performance', null, null, null)">ADC Performance</summary>
+        <details class="nav-group" data-tab="adc-performance">
+          <summary>ADC Performance</summary>
           <div class="nav-sublist">
-            <button class="nav-subitem" type="button" onclick="showTab('adc-performance', this, null, 'adc-ads1262-section')">ADS1262</button>
-            <button class="nav-subitem" type="button" onclick="showTab('adc-performance', this, null, 'adc-sd24b-section')">MSP430F6736A SD24B</button>
-            <button class="nav-subitem" type="button" onclick="showTab('adc-performance', this, null, 'adc-comparison')">ADC Comparison</button>
+            <button class="nav-subitem" type="button" data-tab="adc-performance" data-section="adc-ads1262-section">ADS1262</button>
+            <button class="nav-subitem" type="button" data-tab="adc-performance" data-section="adc-sd24b-section">MSP430F6736A SD24B</button>
+            <button class="nav-subitem" type="button" data-tab="adc-performance" data-section="adc-comparison">ADC Comparison</button>
           </div>
         </details>
 
-        <details class="nav-group">
-          <summary onclick="showTab('signal-analysis', null, null, null)">Signal Analysis</summary>
+        <details class="nav-group" data-tab="signal-analysis">
+          <summary>Signal Analysis</summary>
           <div class="nav-sublist">
-            <button class="nav-subitem" type="button" onclick="showTab('signal-analysis', this, null, 'signal-ca')">H2 Sensor CA Response</button>
-            <button class="nav-subitem" type="button" onclick="showTab('signal-analysis', this, null, 'signal-dpv')">DPV Response</button>
-            <button class="nav-subitem" type="button" onclick="showTab('signal-analysis', this, null, 'signal-eis')">EIS Analysis</button>
-            <button class="nav-subitem" type="button" onclick="showTab('signal-analysis', this, null, 'signal-h2-concentration')">Hydrogen Concentration Test</button>
+            <button class="nav-subitem" type="button" data-tab="signal-analysis" data-section="signal-ca">H2 Sensor CA Response</button>
+            <button class="nav-subitem" type="button" data-tab="signal-analysis" data-section="signal-dpv">DPV Response</button>
+            <button class="nav-subitem" type="button" data-tab="signal-analysis" data-section="signal-eis">EIS Analysis</button>
+            <button class="nav-subitem" type="button" data-tab="signal-analysis" data-section="signal-h2-concentration">Hydrogen Concentration Test</button>
           </div>
         </details>
 
-        <details class="nav-group">
-          <summary onclick="showTab('pc-software', null, null, null)">PC Software</summary>
+        <details class="nav-group" data-tab="pc-software">
+          <summary>PC Software</summary>
           <div class="nav-sublist">
-            <button class="nav-subitem" type="button" onclick="showTab('pc-software', this, null, 'software-architecture')">Software Architecture</button>
-            <button class="nav-subitem" type="button" onclick="showTab('pc-software', this, null, 'software-functions')">Implemented Functions</button>
-            <button class="nav-subitem" type="button" onclick="showTab('pc-software', this, null, 'software-improvements')">Suggested Improvements</button>
-            <button class="nav-subitem" type="button" onclick="showTab('pc-software', this, null, 'software-screenshot')">GUI Screenshot</button>
+            <button class="nav-subitem" type="button" data-tab="pc-software" data-section="software-architecture">Software Architecture</button>
+            <button class="nav-subitem" type="button" data-tab="pc-software" data-section="software-functions">Implemented Functions</button>
+            <button class="nav-subitem" type="button" data-tab="pc-software" data-section="software-improvements">Suggested Improvements</button>
+            <button class="nav-subitem" type="button" data-tab="pc-software" data-section="software-screenshot">GUI Screenshot</button>
           </div>
         </details>
 
-        <details class="nav-group">
-          <summary onclick="showTab('github-code', null, null, null)">GitHub Code</summary>
+        <details class="nav-group" data-tab="github-code">
+          <summary>GitHub Code</summary>
           <div class="nav-sublist">
-            <button class="nav-subitem" type="button" onclick="showTab('github-code', this, null, 'github-structure')">Repository Structure</button>
-            <button class="nav-subitem" type="button" onclick="showTab('github-code', this, null, 'github-cc2640')">CC2640R2F Series Code</button>
-            <button class="nav-subitem" type="button" onclick="showTab('github-code', this, null, 'github-msp430')">MSP430F6736A Series Code</button>
-            <button class="nav-subitem" type="button" onclick="showTab('github-code', this, null, 'github-pc')">PC Software Code</button>
+            <button class="nav-subitem" type="button" data-tab="github-code" data-section="github-structure">Repository Structure</button>
+            <button class="nav-subitem" type="button" data-tab="github-code" data-section="github-hardware">Hardware Design Files</button>
+            <button class="nav-subitem" type="button" data-tab="github-code" data-section="github-cc2640">CC2640R2F Series Code</button>
+            <button class="nav-subitem" type="button" data-tab="github-code" data-section="github-msp430">MSP430F6736A Series Code</button>
+            <button class="nav-subitem" type="button" data-tab="github-code" data-section="github-pc">PC Software Code</button>
           </div>
         </details>
       </aside>
@@ -603,38 +827,51 @@
             digitize the response, transmit data to the PC, and support CA, CV/LSV, DPV/SWV, and EIS-style measurements.
           </div>
 
+          <div class="board-photo">
+            <div class="placeholder">
+              <div>
+                <strong>Upload Area: PCB Prototype Photo</strong>
+                Place the real photo of the assembled circuit board / measurement setup here.
+              </div>
+            </div>
+          </div>
+
           <h2 id="overall-architecture">System Architecture</h2>
           <div class="architecture">
-            <div class="flow">
-              <div class="block"><strong>PC Software</strong>PySide6 GUI<br>data display / CSV logging</div>
-              <div class="arrow">⇄</div>
-              <div class="block"><strong>MCU</strong>CC2640R2F / MSP430F6736A<br>control + UART protocol</div>
-              <div class="arrow">→</div>
-              <div class="block"><strong>DAC</strong>DAC80502<br>programmable bias</div>
-              <div class="arrow">→</div>
-              <div class="block"><strong>Potentiostat</strong>WE / RE / CE control<br>electrode bias regulation</div>
+            <div class="system-diagram">
+              <div class="block"><strong>PC Software</strong>PySide6 GUI<br>real-time plots + CSV export</div>
+              <div class="diagram-arrow">⇄</div>
+              <div class="block"><strong>MCU</strong>CC2640R2F / MSP430F6736A<br>test control + UART protocol</div>
+              <div class="diagram-arrow">→</div>
+              <div class="block"><strong>DAC</strong>DAC80502<br>programmable bias output</div>
+              <div class="diagram-arrow">→</div>
+              <div class="block"><strong>Potentiostat</strong>WE / RE / CE regulation<br>electrode bias loop</div>
             </div>
-            <div class="flow-row">
+
+            <div class="vertical-note-row">
+              <div class="block"><strong>CSV Files</strong>Saved by PC software<br>data processing + figures</div>
+              <div class="diagram-arrow no-rotate">↕</div>
+              <div class="block"><strong>microSD Card</strong>Controlled by MCU<br>embedded data logging</div>
               <div></div>
               <div></div>
-              <div class="arrow down">↑</div>
-              <div></div>
-              <div class="arrow down">↓</div>
-              <div></div>
-              <div></div>
+              <div class="diagram-arrow">↔</div>
+              <div class="block"><strong>Sensor</strong>H2 electrochemical sensor<br>biased by potentiostat</div>
             </div>
-            <div class="flow-row">
-              <div class="block"><strong>Data Storage</strong>CSV / microSD<br>measurement records</div>
-              <div class="arrow">←</div>
-              <div class="block"><strong>ADC</strong>ADS1262 / SD24B<br>high-resolution digitization</div>
-              <div class="arrow">←</div>
-              <div class="block"><strong>TIA</strong>OPA380 / LMP7721<br>current-to-voltage conversion</div>
-              <div class="arrow">←</div>
-              <div class="block"><strong>Sensor</strong>H2 electrochemical sensor<br>current output</div>
+
+            <div class="system-diagram second">
+              <div></div>
+              <div></div>
+              <div class="block"><strong>ADC</strong>ADS1262 / SD24B<br>digitizes TIA + electrode signals</div>
+              <div class="diagram-arrow">←</div>
+              <div class="block"><strong>TIA</strong>OPA380 / LMP7721<br>sensor current to voltage</div>
+              <div class="diagram-arrow">←</div>
+              <div class="block"><strong>Sensor Output</strong>nA-level current<br>CA / DPV / EIS response</div>
             </div>
+
             <p class="caption">
-              The MCU sends bias settings to the DAC, controls the measurement sequence, receives ADC data, and streams results to the PC software.
-              The added MCU → DAC control path highlights the programmable bias loop.
+              The MCU controls the DAC and measurement sequence, while the potentiostat biases the electrochemical cell.
+              The sensor is connected to the potentiostat for electrode biasing and to the TIA readout path for current measurement.
+              CSV storage is a PC-software function, while microSD logging is implemented through the MCU.
             </p>
           </div>
 
@@ -813,83 +1050,107 @@
         <div id="tia-performance" class="tab-content">
           <h1>TIA Performance</h1>
           <p class="lead">
-            This section compares two TIA configurations: OPA380 and LMP7721. The reserved areas are prepared for measured curves, oscilloscope screenshots,
-            noise plots, and linearity data.
+            This section compares two TIA choices used for electrochemical current readout: OPA380 and LMP7721.
+            The test-data placeholders are reserved for your measured I-V curves, including input current versus output voltage,
+            linear fitting, residual error, and noise/stability results.
           </p>
 
           <h2 id="tia-opa380">OPA380 TIA</h2>
           <div class="grid two">
-            <div class="placeholder"><div><strong>Upload Area: OPA380 TIA Test Data</strong>Suggested figures: current sweep, Vout linearity, noise vs time, step response.</div></div>
+            <div class="placeholder"><div><strong>Upload Area: OPA380 I-V Curve</strong>Place measured input-current vs TIA-output-voltage data, fitted gain, residual error, and noise screenshots here.</div></div>
             <div class="card">
-              <h3>Analysis Focus</h3>
+              <h3>Reference-Based Device Notes</h3>
+              <p>
+                OPA380 is a precision high-speed transimpedance amplifier family. TI specifies 90 MHz gain-bandwidth,
+                25 µV offset voltage, 0.1 µV/°C offset drift, and 50 pA input bias current. The datasheet also notes that
+                the TIA signal bandwidth depends strongly on amplifier GBW, input/parasitic capacitance, and feedback resistance,
+                and that the 90 MHz GBW can support greater than 1 MHz transimpedance bandwidth in many configurations.
+              </p>
+              <h3>Analysis for This Project</h3>
               <ul>
-                <li>Current-to-voltage gain accuracy based on feedback resistor value.</li>
-                <li>Output noise under shorted input and electrochemical sensor load.</li>
-                <li>Stability with sensor capacitance and feedback compensation capacitor.</li>
-                <li>Dynamic response during CA or pulse-voltammetry bias transitions.</li>
+                <li>Use the I-V curve to extract transimpedance gain and compare it with the nominal feedback resistor.</li>
+                <li>Check linearity by plotting fitting residuals across the nA current range.</li>
+                <li>Use time-domain noise data to estimate input-referred current noise.</li>
+                <li>Evaluate whether sensor capacitance and feedback capacitance cause overshoot or oscillation.</li>
               </ul>
             </div>
           </div>
 
           <h2 id="tia-lmp7721">LMP7721 TIA</h2>
           <div class="grid two">
-            <div class="placeholder"><div><strong>Upload Area: LMP7721 TIA Test Data</strong>Suggested figures: leakage test, long-term drift, low-current response, noise comparison.</div></div>
+            <div class="placeholder"><div><strong>Upload Area: LMP7721 I-V Curve</strong>Place measured input-current vs TIA-output-voltage data, leakage comparison, drift, and noise screenshots here.</div></div>
             <div class="card">
-              <h3>Analysis Focus</h3>
+              <h3>Reference-Based Device Notes</h3>
+              <p>
+                LMP7721 is designed for extremely low input-bias-current precision sensing. TI lists typical input bias current of 3 fA,
+                specified limits of ±20 fA at 25 °C and ±900 fA at 85 °C, 6.5 nV/√Hz voltage noise at 1 kHz, 17 MHz GBW,
+                1.3 mA supply current, and 1.8 V to 5.5 V supply operation. TI also highlights its pinout for reducing PCB leakage
+                into the input pins, which is important for high-impedance electrochemical front ends.
+              </p>
+              <h3>Analysis for This Project</h3>
               <ul>
-                <li>Ultra-low input bias current benefit for high-feedback-resistance TIA operation.</li>
-                <li>Leakage limitation from PCB surface, connectors, and sensor interface.</li>
-                <li>Low-frequency drift and 1/f noise behavior in long-duration CA tests.</li>
-                <li>Comparison against OPA380 under the same feedback resistor and sensor condition.</li>
+                <li>Use the I-V curve to compare gain accuracy with OPA380 under the same feedback resistor.</li>
+                <li>Focus on leakage and baseline drift, especially when the sensor current is in the low-nA or sub-nA range.</li>
+                <li>Document board-cleanliness and guarding influence because PCB leakage can dominate fA-level amplifier performance.</li>
+                <li>Use long CA baseline data to compare low-frequency drift against OPA380.</li>
               </ul>
             </div>
           </div>
 
           <h2 id="tia-metrics">Recommended TIA Metrics</h2>
           <div class="metric-list">
-            <div class="metric"><strong>Gain Error</strong>Compare measured Vout / Iin with ideal Rf.</div>
-            <div class="metric"><strong>Noise Floor</strong>Report RMS current noise and peak-to-peak noise after bandwidth definition.</div>
-            <div class="metric"><strong>Linearity</strong>Fit current sweep and report R² / residual error.</div>
-            <div class="metric"><strong>Stability</strong>Show step response and ringing/settling behavior with realistic sensor capacitance.</div>
+            <div class="metric"><strong>I-V Gain</strong>Fit Vout versus input current and report measured Rf-equivalent transimpedance.</div>
+            <div class="metric"><strong>Linearity</strong>Report R² and residual error across the measured nA current range.</div>
+            <div class="metric"><strong>Input-Referred Noise</strong>Convert output-voltage noise to current noise using the feedback resistor.</div>
+            <div class="metric"><strong>Stability</strong>Show current-step response or sensor-connected CA baseline to verify no oscillation/ringing.</div>
           </div>
         </div>
 
         <div id="adc-performance" class="tab-content">
           <h1>ADC Performance</h1>
           <p class="lead">
-            This section documents the digitization performance of ADS1262 and the MSP430F6736A built-in SD24B ADC.
+            This section compares the external ADS1262 precision ADC path and the MSP430F6736A SD24B integrated ADC path.
+            The data placeholders are reserved for your measured input-voltage versus ADC-converted-voltage comparison curves.
           </p>
 
           <h2 id="adc-ads1262-section">ADS1262</h2>
           <div class="grid two">
-            <div class="placeholder"><div><strong>Upload Area: ADS1262 Performance Data</strong>Suggested figures: shorted-input noise, raw-code histogram, DC input sweep, ENOB table.</div></div>
+            <div class="placeholder"><div><strong>Upload Area: ADS1262 Vin vs Converted Voltage</strong>Place input-voltage sweep, ADC converted voltage, fitting line, residual error, and noise data here.</div></div>
             <div class="card">
-              <h3>Analysis</h3>
+              <h3>Reference-Based Device Notes</h3>
               <p>
-                ADS1262 is the external precision ADC option. The performance analysis should focus on low-noise digitization of the TIA output,
-                reference stability, input filtering, and data-rate/noise tradeoff.
+                ADS1262 is a precision 32-bit delta-sigma ADC with data rates from 2.5 SPS to 38400 SPS, differential inputs,
+                an integrated CMOS PGA, and 11 multifunction analog inputs. TI lists gain options from 1 to 32, offset drift of
+                1 nV/°C, gain drift of 0.5 ppm/°C, 7 nVRMS noise at 2.5 SPS and gain = 32, 3 ppm linearity, and a 2.5 V internal
+                reference with 2 ppm/°C drift.
               </p>
+              <h3>Analysis for This Project</h3>
               <ul>
-                <li>Measure shorted-input RMS noise at different sampling rates.</li>
-                <li>Measure DC stability and drift during long-duration CA acquisition.</li>
-                <li>Compare ADC code distribution before and after digital filtering.</li>
+                <li>Use Vin-versus-converted-voltage data to verify conversion accuracy and linearity.</li>
+                <li>Use residual error to identify gain error, offset error, and possible reference/input-divider error.</li>
+                <li>Compare noise at different data rates and PGA gains if multiple ADS1262 settings are tested.</li>
+                <li>Evaluate whether ADS1262 resolution is limited by ADC noise, reference noise, or TIA output noise.</li>
               </ul>
             </div>
           </div>
 
           <h2 id="adc-sd24b-section">MSP430F6736A SD24B</h2>
           <div class="grid two">
-            <div class="placeholder"><div><strong>Upload Area: SD24B Performance Data</strong>Suggested figures: SD24B offset calibration, noise over time, raw-code histogram, channel comparison.</div></div>
+            <div class="placeholder"><div><strong>Upload Area: SD24B Vin vs Converted Voltage</strong>Place input-voltage sweep, converted voltage, zero-offset calibration comparison, and raw-code data here.</div></div>
             <div class="card">
-              <h3>Analysis</h3>
+              <h3>Reference-Based Device Notes</h3>
               <p>
-                The SD24B path provides an integrated 24-bit ADC solution. It reduces external component count and simplifies the system, but requires careful
-                offset calibration, reference handling, and firmware-side data formatting.
+                MSP430F6736A is a metering-oriented MSP430 device with three 24-bit sigma-delta ADC channels, a 25 MHz MSP430 CPU,
+                128 KB flash, 8 KB RAM, LCD support, real-time clock, and UART/SPI/I2C communication interfaces.
+                The MSP430F673x/F672x family datasheet describes up to three high-performance 24-bit sigma-delta ADCs plus a 10-bit ADC,
+                multiple serial interfaces, timers, DMA, RTC, LCD driver, and up to 72 I/O pins.
               </p>
+              <h3>Analysis for This Project</h3>
               <ul>
-                <li>Use zero-offset calibration data to show improvement after shorted-input calibration.</li>
-                <li>Compare raw and calibrated current readout stability.</li>
-                <li>Evaluate whether integrated ADC noise is sufficient for nA-level sensor signals.</li>
+                <li>Use Vin-versus-converted-voltage data to quantify SD24B offset and gain error.</li>
+                <li>Compare readings before and after zero-offset calibration.</li>
+                <li>Evaluate whether integrated SD24B performance is sufficient for TIA output voltage resolution.</li>
+                <li>Show raw-code histogram and long-term DC stability for low-current measurements.</li>
               </ul>
             </div>
           </div>
@@ -900,23 +1161,23 @@
               <thead>
                 <tr>
                   <th>ADC Path</th>
-                  <th>Strength</th>
-                  <th>Limitation to Check</th>
-                  <th>Data to Upload Later</th>
+                  <th>Reference Strength</th>
+                  <th>Your Planned Data</th>
+                  <th>Analysis Target</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>ADS1262</td>
-                  <td>External precision ADC, flexible filtering, high-resolution conversion.</td>
-                  <td>Board area, SPI routing, reference layout, configuration complexity.</td>
-                  <td>Noise, ENOB, INL/DNL or DC sweep, reference drift.</td>
+                  <td>32-bit ΔΣ ADC, PGA, low drift, low noise, flexible data-rate/filter settings.</td>
+                  <td>Input voltage vs ADC converted voltage comparison.</td>
+                  <td>Linearity, offset error, gain error, residual error, and noise floor.</td>
                 </tr>
                 <tr>
                   <td>MSP430F6736A SD24B</td>
-                  <td>Integrated MCU + ADC path, lower part count, simpler system architecture.</td>
-                  <td>Integrated ADC noise, offset drift, channel calibration, firmware scaling.</td>
-                  <td>Offset calibration, noise histogram, long-term current stability.</td>
+                  <td>Integrated 24-bit sigma-delta ADC channels with MCU control and lower external part count.</td>
+                  <td>Input voltage vs SD24B converted voltage comparison, with zero-offset calibration result.</td>
+                  <td>Practical resolution, calibration improvement, stability, and suitability for nA-level TIA readout.</td>
                 </tr>
               </tbody>
             </table>
@@ -985,6 +1246,13 @@
             The PC software is a Python / PySide6 electrochemical workstation GUI. It communicates with the embedded system through UART,
             parses binary frames or legacy CSV text, displays real-time plots, and records measurement data to CSV.
           </p>
+
+          <div class="placeholder">
+            <div>
+              <strong>Upload Area: PC Software Screenshot</strong>
+              Place the main Python GUI screenshot here, including connection bar, CA/CV/DPV/SWV/EIS tabs, real-time plots, and CSV controls.
+            </div>
+          </div>
 
           <h2 id="software-architecture">Software Architecture</h2>
           <div class="grid two">
@@ -1099,11 +1367,38 @@
 │   └── README.md
 ├── hardware/
 │   ├── schematic/
+│   │   ├── potentiostat.pdf
+│   │   ├── tia_opa380.pdf
+│   │   ├── tia_lmp7721.pdf
+│   │   ├── adc_ads1262.pdf
+│   │   ├── adc_sd24b.pdf
+│   │   ├── dac80502.pdf
+│   │   └── peripheral_circuits.pdf
 │   ├── pcb_layout/
+│   │   ├── pcb_top_layer.pdf
+│   │   ├── pcb_bottom_layer.pdf
+│   │   ├── pcb_assembly_render.png
+│   │   └── gerber_files.zip
 │   └── test_results/
+│       ├── tia_iv_curve/
+│       ├── adc_vin_conversion/
+│       └── h2_sensor_signal/
 └── docs/
     ├── figures/
     └── measurement_notes/</div>
+
+          <h2 id="github-hardware">Hardware Design Files</h2>
+          <div class="grid two">
+            <div class="card">
+              <h3>Content</h3>
+              <ul>
+                <li>Schematic PDF files for potentiostat, TIA, ADC, DAC, and peripheral circuits.</li>
+                <li>PCB layout files including top layer, bottom layer, assembly render, and Gerber package.</li>
+                <li>Hardware test-result folders for TIA I-V curves, ADC voltage conversion comparison, and H2 sensor data.</li>
+              </ul>
+            </div>
+            <div class="placeholder small"><div><strong>GitHub Link Placeholder</strong>Add hardware schematic / PCB layout repository or folder link here.</div></div>
+          </div>
 
           <h2 id="github-cc2640">CC2640R2F Series Code</h2>
           <div class="grid two">
@@ -1153,45 +1448,116 @@
   </main>
 
   <script>
-    function clearActiveButtons() {
-      document.querySelectorAll('.nav-subitem, .tab-button, .submenu-toggle, .submenu-button').forEach(function(btn) {
-        btn.classList.remove('active');
+    function contentArea() {
+      return document.querySelector('.content-area');
+    }
+
+    function clearActiveStates() {
+      document.querySelectorAll('.nav-subitem').forEach(function(item) {
+        item.classList.remove('active');
+      });
+      document.querySelectorAll('.nav-group summary').forEach(function(summary) {
+        summary.classList.remove('active-summary');
       });
     }
 
-    function clearActiveTabs() {
+    function showTabById(tabId) {
       document.querySelectorAll('.tab-content').forEach(function(tab) {
         tab.classList.remove('active');
       });
-    }
-
-    function scrollToSection(sectionId) {
-      if (!sectionId) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        return;
-      }
-      var section = document.getElementById(sectionId);
-      if (!section) return;
-      setTimeout(function() {
-        var y = section.getBoundingClientRect().top + window.pageYOffset - 18;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }, 60);
-    }
-
-    function showTab(tabId, buttonElement, menuId, sectionId) {
-      clearActiveButtons();
-      clearActiveTabs();
 
       var target = document.getElementById(tabId);
-      if (target) target.classList.add('active');
+      if (target) {
+        target.classList.add('active');
+      }
+    }
 
-      if (buttonElement) buttonElement.classList.add('active');
-      scrollToSection(sectionId);
+    function closeOtherGroups(activeTabId) {
+      document.querySelectorAll('.nav-group').forEach(function(group) {
+        if (group.getAttribute('data-tab') !== activeTabId) {
+          group.open = false;
+        }
+      });
+    }
+
+    function scrollPanelToTop() {
+      var area = contentArea();
+      if (!area) return;
+      area.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollPanelToSection(sectionId) {
+      var area = contentArea();
+      var section = document.getElementById(sectionId);
+      if (!area || !section) return;
+
+      requestAnimationFrame(function() {
+        var areaRect = area.getBoundingClientRect();
+        var sectionRect = section.getBoundingClientRect();
+        var top = area.scrollTop + sectionRect.top - areaRect.top - 14;
+        area.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+      });
+    }
+
+    function activateSummaryForTab(tabId) {
+      var group = document.querySelector('.nav-group[data-tab="' + tabId + '"]');
+      if (!group) return;
+
+      closeOtherGroups(tabId);
+      group.open = true;
+
+      var summary = group.querySelector('summary');
+      if (summary) {
+        summary.classList.add('active-summary');
+      }
+    }
+
+    function activateTab(tabId, sectionId, clickedButton) {
+      clearActiveStates();
+      showTabById(tabId);
+      activateSummaryForTab(tabId);
+
+      if (clickedButton) {
+        clickedButton.classList.add('active');
+      }
+
+      if (sectionId) {
+        scrollPanelToSection(sectionId);
+      } else {
+        scrollPanelToTop();
+      }
     }
 
     window.addEventListener('DOMContentLoaded', function() {
-      var first = document.querySelector('.nav-subitem');
-      if (first) first.classList.add('active');
+      document.querySelectorAll('.nav-group > summary').forEach(function(summary) {
+        summary.addEventListener('click', function(event) {
+          event.preventDefault();
+
+          var group = summary.closest('.nav-group');
+          var tabId = group ? group.getAttribute('data-tab') : null;
+          if (!tabId) return;
+
+          // Use the summary as a tab selector and accordion header.
+          // This avoids the native <details> toggle fighting with the tab script.
+          activateTab(tabId, null, null);
+        });
+      });
+
+      document.querySelectorAll('.nav-subitem').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+          event.stopPropagation();
+
+          var tabId = button.getAttribute('data-tab');
+          var sectionId = button.getAttribute('data-section');
+
+          if (!tabId) return;
+          activateTab(tabId, sectionId, button);
+        });
+      });
+
+      // Initial state: show the Overall tab and keep only its dropdown open.
+      activateTab('overall', null, document.querySelector('.nav-subitem[data-tab="overall"]'));
     });
   </script>
 </body>
